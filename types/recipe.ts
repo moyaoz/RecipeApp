@@ -3,6 +3,7 @@ export interface RecipePreferences {
   servings: number
   cuisines: string[]
   mealType?: 'breakfast' | 'lunch' | 'dinner'
+  mealPrepDuration?: number
   difficulty: 'easy' | 'medium' | 'hard'
   dietaryRestrictions: string[]
   healthGoals: string[]
@@ -15,6 +16,7 @@ export interface Recipe {
   image: string
   cuisines: string[]
   mealType?: 'breakfast' | 'lunch' | 'dinner'
+  mealPrepDuration?: number
   difficulty: 'easy' | 'medium' | 'hard'
   cookTime: number
   servings: number

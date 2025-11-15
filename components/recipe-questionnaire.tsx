@@ -34,6 +34,13 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
       ],
     },
     {
+      question: 'How many days do you want your meal prep to last?',
+      type: 'number',
+      key: 'mealPrepDuration',
+      min: 1,
+      max: 7,
+    },
+    {
       question: 'How long do you want to spend cooking?',
       type: 'select',
       key: 'duration',
@@ -48,7 +55,7 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
       type: 'number',
       key: 'servings',
       min: 1,
-      max: 12,
+      max: 6,
     },
     {
       question: 'What cuisines interest you?',
@@ -146,71 +153,111 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
           <div className="space-y-3 mb-8">
             {currentStep.type === 'select' && (
               <div className="space-y-2">
-                {currentStep.options?.map(option => (
-                  <button
-                    key={option.value}
-                    onClick={() => handleSelect(option.value)}
-                    className={`w-full p-4 rounded-lg border-2 transition-all text-left font-medium ${
-                      preferences[currentStep.key as keyof RecipePreferences] === option.value
-                        ? 'border-orange-500 bg-orange-50 dark:bg-orange-950 text-orange-900 dark:text-orange-100'
-                        : 'border-border hover:border-orange-300 hover:bg-orange-50/50 dark:hover:bg-slate-800'
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
+                {currentStep.options?.map(optionItem => {
+                  const optionValue = typeof optionItem === 'string' ? optionItem : optionItem.value
+                  const optionLabel = typeof optionItem === 'string' ? optionItem : optionItem.label
+                  return (
+                    <button
+                      key={optionValue}
+                      onClick={() => handleSelect(optionValue)}
+                      className={`w-full p-4 rounded-lg border-2 transition-all text-left font-medium ${
+                        preferences[currentStep.key as keyof RecipePreferences] === optionValue
+                          ? 'border-orange-500 bg-orange-50 dark:bg-orange-950 text-orange-900 dark:text-orange-100'
+                          : 'border-border hover:border-orange-300 hover:bg-orange-50/50 dark:hover:bg-slate-800'
+                      }`}
+                    >
+                      {optionLabel}
+                    </button>
+                  )
+                })}
                 
               </div>
             )}
 
             {currentStep.type === 'number' && (
               <div className="space-y-4">
-                <input
-                  type="number"
-                  min={currentStep.min}
-                  max={currentStep.max}
-                  value={(preferences[currentStep.key as keyof RecipePreferences] as number) || ''}
-                  onChange={e => handleNumberChange(parseInt(e.target.value))}
-                  className="w-full p-4 rounded-lg border-2 border-border focus:border-orange-500 outline-none text-center text-lg font-bold"
-                />
-                <div className="flex justify-center gap-2">
-                  {Array.from({ length: 6 }, (_, i) => {
-                    const val = (i + 1) * 2
-                    return (
-                      <button
-                        key={val}
-                        onClick={() => handleNumberChange(val)}
-                        className={`w-10 h-10 rounded-full font-semibold transition-all ${
-                          preferences.servings === val
-                            ? 'bg-orange-500 text-white'
-                            : 'bg-border hover:bg-orange-100 dark:hover:bg-slate-700'
-                        }`}
-                      >
-                        {val}
-                      </button>
-                    )
-                  })}
+                <div className="flex items-center justify-center gap-2">
+                  <button
+                    onClick={() => {
+                      const key = currentStep.key as keyof RecipePreferences
+                      const min = (currentStep as any).min ?? 1
+                      const cur = (preferences[key] as number) || min
+                      const next = Math.max(min, cur - 1)
+                      setPreferences(prev => ({ ...prev, [key]: next }))
+                    }}
+                    className="w-10 h-10 rounded-md bg-border hover:bg-orange-100 flex items-center justify-center"
+                    aria-label="Decrease"
+                  >
+                    −
+                  </button>
+
+                  <input
+                    type="number"
+                    min={currentStep.min}
+                    max={currentStep.max}
+                    value={(preferences[currentStep.key as keyof RecipePreferences] as number) || ''}
+                    onChange={e => handleNumberChange(parseInt(e.target.value))}
+                    readOnly
+                    className="w-28 p-4 rounded-lg border-2 border-border focus:border-orange-500 outline-none text-center text-lg font-bold cursor-default"
+                  />
+
+                  <button
+                    onClick={() => {
+                      const key = currentStep.key as keyof RecipePreferences
+                      const max = (currentStep as any).max ?? 7
+                      const cur = (preferences[key] as number) || ((currentStep as any).min ?? 1)
+                      const next = Math.min(max, cur + 1)
+                      setPreferences(prev => ({ ...prev, [key]: next }))
+                    }}
+                    className="w-10 h-10 rounded-md bg-border hover:bg-orange-100 flex items-center justify-center"
+                    aria-label="Increase"
+                  >
+                    +
+                  </button>
                 </div>
-                
+
+                {currentStep.key === 'servings' && (
+                  <div className="flex justify-center gap-2">
+                    {Array.from({ length: 6 }, (_, i) => {
+                      const val = i + 1
+                      return (
+                        <button
+                          key={val}
+                          onClick={() => handleNumberChange(val)}
+                          className={`w-10 h-10 rounded-full font-semibold transition-all ${
+                            preferences.servings === val
+                              ? 'bg-orange-500 text-white'
+                              : 'bg-border hover:bg-orange-100 dark:hover:bg-slate-700'
+                          }`}
+                        >
+                          {val}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+
               </div>
             )}
 
             {currentStep.type === 'multi-select' && (
               <div className="flex flex-wrap gap-2">
-                {currentStep.options?.map(option => {
-                  const current = preferences[currentStep.key as keyof RecipePreferences] as string[] || []
-                  const isSelected = current.includes(option)
+                {currentStep.options?.map(optionItem => {
+                  const optionValue = typeof optionItem === 'string' ? optionItem : optionItem.value
+                  const optionLabel = typeof optionItem === 'string' ? optionItem : optionItem.label
+                  const current = (preferences[currentStep.key as keyof RecipePreferences] as string[]) || []
+                  const isSelected = current.includes(optionValue)
                   return (
                     <button
-                      key={option}
-                      onClick={() => handleMultiSelect(option)}
+                      key={optionValue}
+                      onClick={() => handleMultiSelect(optionValue)}
                       className={`px-4 py-2 rounded-full font-medium transition-all ${
                         isSelected
                           ? 'bg-orange-500 text-white shadow-md'
                           : 'bg-border hover:bg-orange-100 dark:hover:bg-slate-700 text-foreground'
                       }`}
                     >
-                      {option}
+                      {optionLabel}
                     </button>
                   )
                 })}

@@ -42,10 +42,11 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
         recipe.cuisines.some(c => preferences.cuisines.includes(c))
       const matchesDifficulty = !preferences.difficulty || recipe.difficulty === preferences.difficulty
       const matchesMeal = !preferences.mealType || recipe.mealType === preferences.mealType
+      const matchesMealPrepDuration = !preferences.mealPrepDuration || recipe.mealPrepDuration === preferences.mealPrepDuration
       const matchesDiet = preferences.dietaryRestrictions.length === 0 ||
         recipe.dietaryTags.some(tag => preferences.dietaryRestrictions.includes(tag))
 
-      return matchesCuisine && matchesDifficulty && matchesDiet && matchesMeal
+      return matchesCuisine && matchesDifficulty && matchesDiet && matchesMeal && matchesMealPrepDuration
     })
 
     setRecipes(filtered)

@@ -20,7 +20,8 @@ export function BookmarksPage({ onBack }: BookmarksPageProps) {
   useEffect(() => {
     const saved = localStorage.getItem('recipe-bookmarks')
     if (saved) {
-      const bookmarkIds = new Set(JSON.parse(saved))
+      const parsed = JSON.parse(saved) as string[]
+      const bookmarkIds = new Set<string>(parsed)
       setBookmarks(bookmarkIds)
       const recipes = MOCK_RECIPES.filter(r => bookmarkIds.has(r.id))
       setBookmarkedRecipes(recipes)
