@@ -2,7 +2,7 @@ import type { Recipe } from '@/types/recipe'
 
 // TO DO: 
 // - update the image for every recipe
-// - maybe change the format of cooktime to hours and minutes instead of just minutes
+// - maybe change the format of cooktime to hours and minutes instead of just minutes?
 
 export const MOCK_RECIPES: Recipe[] = [
   // TO UPDATE: source, sourceUrl
@@ -373,6 +373,109 @@ export const MOCK_RECIPES: Recipe[] = [
     ],
     dietaryTags: [],
     healthTags: ['High-Protein', 'Low-Cholesterol', 'Low-Fat', 'Vegetarian', 'Gluten-Free'],
-  }
+  },
+
+  {
+    id: '11',
+    title: 'Chia Pudding',
+    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    cuisines: ['American'],
+    mealType: 'breakfast',
+    mealPrepDuration: 1,
+    difficulty: 'easy',
+    cookTime: 240,
+    servings: 1,
+    rating: 4.8,
+    source: 'Tasty',
+    sourceUrl: 'https://tasty.co/recipe/vanilla-berry-protein-smoothie',
+    ingredients: [
+      '2 tbsp chia seeds',
+      '½ cup milk (of your choice)',
+      '1 tsp maple syrup or other sweetener (optional)',
+      '1 cup frozen blueberries',
+      '½ cup frozen raspberries',
+      '½ cup frozen blackberries',
+    ],
+    instructions: [
+      'Put all ingredients into a blender.',
+      'Mix until smooth.'
+    ],
+    dietaryTags: ['Nut-Free'],
+    healthTags: ['Low-Cholesterol', 'High-Fiber'],
+  },
+
+  {
+    id: '12',
+    title: 'Sheet Pan Omelette',
+    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    cuisines: ['American'],
+    mealType: 'breakfast',
+    mealPrepDuration: 2,
+    difficulty: 'easy',
+    cookTime: 25,
+    servings: 3,
+    rating: 4.8,
+    source: 'The Recipe Well',
+    sourceUrl: 'https://therecipewell.com/sheet-pan-omelette/#recipe',
+    ingredients: [
+      '12 large eggs',
+      '⅓ cup cottage cheese',
+      '⅓ cup milk (whole or 2%)',
+      '½ teaspoon sea salt',
+      '¼ teaspoon black pepper',
+      '½ cup fresh spinach, roughly chopped',
+      '⅓ cup red bell pepper, thinly sliced',
+      '⅓ cup feta cheese (or about ½ cup shredded cheddar)'
+    ],
+    instructions: [
+      'Preheat the oven to 350°F and grease a 14½ × 9½-inch jelly-roll (sheet) pan.',
+      'In a large bowl, whisk together the eggs, cottage cheese, milk, salt, and pepper until fully blended.',
+      'Pour the egg mixture into the prepared pan (be careful, the pan will be quite full).',
+      'Evenly sprinkle the spinach, bell pepper, and feta (or your chosen cheese) on top of the egg mixture.',
+      'Bake for 15–18 minutes, or until the eggs are firm and set (no longer jiggly).',
+      'Once done, slice and serve with your desired sides.'
+    ],
+    dietaryTags: ['Gluten-Free', 'Nut-Free', 'Vegetarian'],
+    healthTags: ['High-Protein', 'Low-Carb'],
+  },
+
+  {
+    id: '13',
+    title: 'French Toast Sticks',
+    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    cuisines: ['American'],
+    mealType: 'breakfast',
+    mealPrepDuration: 4,
+    difficulty: 'easy',
+    cookTime: 35,
+    servings: 2,
+    rating: 4.8,
+    source: 'Tasty',
+    sourceUrl: 'https://tasty.co/recipe/freezer-prep-french-toast-sticks',
+    ingredients: [
+      '1 loaf Texas toast (or thick/sandwich bread)',
+      '7 large eggs',
+      '1 cup milk',
+      '3 tbsp butter, melted',
+      '1 tsp vanilla extract',
+      '2 tbsp sugar',
+      'salt, to taste',
+      'Cooking spray (to grease baking sheet)'
+    ],
+    instructions: [
+      'Preheat oven to 350°F (175°C).',
+      'Spray a large baking sheet with cooking spray.',
+      'Stack the bread slices and cut into thirds to form sticks.',
+      'In a large bowl, whisk together eggs, milk, melted butter, vanilla, cinnamon, sugar, and salt.',
+      'Dip each bread stick into the egg mixture, letting excess drip off. Place coated sticks on the prepared baking sheet.',
+      'Bake for 15–20 minutes, flipping halfway through.',
+      'Let cool slightly. Serve with warm syrup or toppings of choice.'
+    ],
+    dietaryTags: ['Nut-Free', 'Vegetarian'],
+    healthTags: [],
+  },
+
+
+
 
 ]
