@@ -127,12 +127,10 @@ export function RecipeDetails({
         <Card className="p-6 mb-6">
           <h2 className="text-xl font-bold mb-4">Ingredients</h2>
           <ul className="space-y-3">
-            {recipe.ingredients.map((ing, idx) => (
+            {recipe.ingredients.map((ingredient, idx) => (
               <li key={idx} className="flex items-start gap-3">
                 <input type="checkbox" className="mt-1 w-4 h-4 rounded" />
-                <span className="text-foreground">
-                  {ing.amount} {ing.unit} {ing.name}
-                </span>
+                <span className="text-foreground">{ingredient}</span>
               </li>
             ))}
           </ul>
