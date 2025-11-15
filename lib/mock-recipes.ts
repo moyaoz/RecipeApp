@@ -1,6 +1,8 @@
 import type { Recipe } from '@/types/recipe'
 
-// TO DO: update the image for every recipe
+// TO DO: 
+// - update the image for every recipe
+// - maybe change the format of cooktime to hours and minutes instead of just minutes
 
 export const MOCK_RECIPES: Recipe[] = [
   // TO UPDATE: source, sourceUrl
@@ -308,8 +310,38 @@ export const MOCK_RECIPES: Recipe[] = [
   },
 
   {
-    id: '8',
-    title: 'Caesar salad',
+    id: '9',
+    title: 'Overnight Oats',
+    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    cuisines: ['American'],
+    mealType: 'breakfast',
+    mealPrepDuration: 1,
+    difficulty: 'easy',
+    cookTime: 480,
+    servings: 1,
+    rating: 4.8,
+    source: 'Feel Good Foodie',
+    sourceUrl: 'https://feelgoodfoodie.net/recipe/overnight-oats/#wprm-recipe-container-8144',
+    ingredients: [
+      '½ cup rolled oats',
+      '½ cup milk of choice',
+      '¼ cup Greek yogurt (non-fat)',
+      '1 Tbsp chia seeds',
+      '1 Tbsp sweetener (honey or maple syrup)',
+      '¼ tsp vanilla extract'
+    ],
+    instructions: [
+      'Place all ingredients (for the base and any chosen add-ins into a large glass container and mix until combined',
+      'Cover the container with a lid or plastic wrap. Refrigerate for at least 2 hours or overnight. Add toppings either the nighht before or right before serving.',
+      'Uncover and enjoy the next day. Thin with a little milk or water if desired.'
+    ],
+    dietaryTags: [],
+    healthTags: ['High-Protein'],
+  },
+
+  {
+    id: '10',
+    title: 'Vanilla Berry Protein Smoothie',
     image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
     cuisines: ['American'],
     mealType: 'lunch',
@@ -318,25 +350,22 @@ export const MOCK_RECIPES: Recipe[] = [
     cookTime: 30,
     servings: 4,
     rating: 4.8,
-    source: 'Natasha\'s Kitchen',
-    sourceUrl: 'https://natashaskitchen.com/caesar-salad-recipe/',
+    source: 'Tasty',
+    sourceUrl: 'https://tasty.co/recipe/vanilla-berry-protein-smoothie',
     ingredients: [
-      '1 large or 2 small heads of Romaine lettuce',
-      'Parmesan cheese, grated/shredded/shaved',
-      'Crisp croutons',
-      'Caesar dressing'
+      '1 ½ cups water, yogurt, or milk of choice',
+      '1 scoop vanilla protein powder',
+      '1 cup frozen strawberries',
+      '1 cup frozen blueberries',
+      '½ cup frozen raspberries',
+      '½ cup frozen blackberries',
     ],
     instructions: [
-      'Rinse the lettuce in cold water.',
-      'Chop, rinse, and spin dry the leaves to remove as much water as possible.',
-      'Once the romaine is rinsed and dried, store it in an airtight container or a zip-top bag with a paper towel to absorb moisture,',
-      'Add desired amount of croutons and mix.'
+      'Put all ingredients into a blender.',
+      'Mix until smooth.'
     ],
-    dietaryTags: ['Nut-Free', 'Gluten-Free'],
-    healthTags: [],
+    dietaryTags: [],
+    healthTags: ['High-Protein', 'Low-Cholesterol', 'Low-Fat', 'Vegetarian', 'Gluten-Free'],
   },
 
-  
-
-  
 ]
