@@ -21,7 +21,7 @@ export const MOCK_RECIPES: Recipe[] = [
     sourceUrl: 'https://example.com/recipe/margherita-pizza',
     ingredients: [
       '1 pound ground beef',
-      '1medium yellow or white onion, finely chopped',
+      '1 medium yellow or white onion, finely chopped',
       '1½ teaspoons ground cumin',
       '½ teaspoon smoked paprika, or chipotle or ancho chile powder',
       '½ teaspoon dried oregano',
@@ -30,7 +30,7 @@ export const MOCK_RECIPES: Recipe[] = [
       '2 teaspoons lime juice, or apple cider vinegar',
       'Hot sauce, for drizzling (optional)',
       '6 burrito-size (about 10-inch) flour tortillas',
-      '2cups (8 ounces) shredded Monterey Jack or Mexican blend cheese'
+      '2 cups (8 ounces) shredded Monterey Jack or Mexican blend cheese'
     ],
     instructions: [
       'In a large skillet, press the beef into an even layer to fill the skillet. Sprinkle with the onion. Cook over medium-high, undisturbed, until the meat is deeply browned underneath, 6 to 8 minutes.',
@@ -91,23 +91,31 @@ export const MOCK_RECIPES: Recipe[] = [
     source: 'spend with pennies',
     sourceUrl: 'https://www.spendwithpennies.com/easy-homemade-lasagna/#wprm-recipe-container-145181',
     ingredients: [
-      '1 lb sushi-grade ahi tuna, cut into ~¾-inch cubes',
-      '¼ cup soy sauce',
-      '1 tsp rice vinegar',
-      '1½ tsp sesame oil',
-      '¾ tsp red pepper flakes (crushed)',
-      '⅓ cup green onions (thinly sliced) ',
-      '½ tsp sesame seeds (plus more for garnish)',
-      '2 cups cooked brown rice (or white rice)',
-      '2 cups salad greens',
+      '12 uncooked lasagna noodles',
+      '4 cups shredded mozzarella cheese divided',
+      '½ cup shredded Parmesan cheese shredded and divided',
+      '¾ teaspoon salt',
+      '½ pound lean ground beef',
+      '½ pound Italian sausage',
+      '1 yellow onion diced',
+      '36 ounces pasta sauce',
+      '2 tablespoons tomato sauce',
+      '1 teaspoon Italian seasoning',
+      '2 cups ricotta cheese or cottage cheese',
+      '¼ cup chopped fresh parsley',
+      '1 large egg beaten'
     ],
     instructions: [
-      'Cook the rice: Rinse and cook the rice per the manufacturer’s instructions.',
-      'Marinate the tuna: In a bowl, combine the tuna cubes, soy sauce, rice vinegar, sesame oil, red pepper flakes, green onions, and sesame seeds. Mix so the marinade coats the tuna.',
-      'Assemble the bowls: Divide the cooked rice and salad greens into bowls. Top with the marinated tuna (either immediately after mixing, or after marinating 15-30 minutes for deeper flavor).',
-      'Add toppings & serve: Garnish with extra sesame seeds and desired toppings (avocado, cucumber, seaweed, etc.). Serve right away.'
+     'Preheat the oven to 350°F. Bring a large pot of salted water to a boil. Add the lasagna noodles and cook until al dente (firm) according to package directions. Drain, rinse under cold water, and set aside.',
+     'Meanwhile, in a large skillet or Dutch oven, brown the beef, sausage, onion, and garlic over medium-high heat until no pink remains. Drain any fat.',
+     'Stir in the pasta sauce, tomato paste, Italian seasoning, ½ teaspoon of salt, and ¼ teaspoon of black pepper. Simmer uncovered over medium heat for 5 minutes or until slightly thickened. Taste and season with additional salt if desired.',
+     'In a separate medium bowl, combine 1 ½ cups mozzarella cheese, ¼ cup parmesan cheese, ricotta, parsley, egg, and ¼ teaspoon salt.',
+     'Spread 1 cup of the meat sauce in a 9×13 pan or casserole dish. Top it with 3 lasagna noodles. Layer with ⅓ of the ricotta cheese mixture and 1 cup of meat sauce. Repeat twice more. Finish with 3 noodles topped with remaining sauce.',
+     'Cover with foil and bake for 45 minutes.',
+     'Remove the foil and sprinkle the top of the lasagna with the remaining 2 ½ cups mozzarella cheese and ¼ cup parmesan cheese. Bake uncovered for an additional 15 minutes or until browned and bubbly. Broil for 2-3 minutes if desired.',
+     'Rest for at least 15 minutes before cutting.'
     ],
-    dietaryTags: ['Nut-Free', 'Dairy-Free'],
+    dietaryTags: ['Nut-Free'],
     healthTags: [],
   },
 
@@ -217,7 +225,7 @@ export const MOCK_RECIPES: Recipe[] = [
       'Fresh cilantro',
       'Green onions',
       'Sliced white or red onion',
-      'Fresh line wedges',
+      'Fresh lime wedges',
       'Mung bean sprouts',
       'Sliced Thai red chiles',
       'Cabbage',
@@ -225,7 +233,6 @@ export const MOCK_RECIPES: Recipe[] = [
       'Sliced jalapeño',
       'Sriracha or other spicy chili sauces',
       'Hoisin sauce',
-      'Fish sauce'
     ],
     instructions: [
       'Pick a large enough bowl. YOU GUYS, Vietnamese noodle soup needs big bowls. Cereal bowls will not work here. Between the noodles and the broth and the veggies, bowls fill up fast.',
@@ -332,7 +339,7 @@ export const MOCK_RECIPES: Recipe[] = [
     ],
     instructions: [
       'Place all ingredients (for the base and any chosen add-ins into a large glass container and mix until combined',
-      'Cover the container with a lid or plastic wrap. Refrigerate for at least 2 hours or overnight. Add toppings either the nighht before or right before serving.',
+      'Cover the container with a lid or plastic wrap. Refrigerate for at least 2 hours or overnight. Add toppings either the night before or right before serving.',
       'Uncover and enjoy the next day. Thin with a little milk or water if desired.'
     ],
     dietaryTags: [],
@@ -366,6 +373,6 @@ export const MOCK_RECIPES: Recipe[] = [
     ],
     dietaryTags: [],
     healthTags: ['High-Protein', 'Low-Cholesterol', 'Low-Fat', 'Vegetarian', 'Gluten-Free'],
-  },
+  }
 
 ]
