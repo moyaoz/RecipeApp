@@ -19,7 +19,7 @@ export interface Recipe {
   rating: number
   source: string
   sourceUrl: string
-  ingredients: Ingredient[]
+  ingredients: string[]
   instructions: string[]
   dietaryTags: string[]
   healthTags: string[]
