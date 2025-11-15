@@ -1,8 +1,9 @@
 import type { Recipe } from '@/types/recipe'
 
-// TO DO: edit image, source, sourceUrl, healthTags
+// TO DO: update the image for every recipe
 
 export const MOCK_RECIPES: Recipe[] = [
+  // TO UPDATE: source, sourceUrl
   {
     id: '1',
     title: 'Burrito Wrap',
@@ -85,8 +86,8 @@ export const MOCK_RECIPES: Recipe[] = [
     cookTime: 30,
     servings: 4,
     rating: 4.8,
-    source: 'Food Blogger Pro',
-    sourceUrl: 'https://example.com/recipe/margherita-pizza',
+    source: 'spend with pennies',
+    sourceUrl: 'https://www.spendwithpennies.com/easy-homemade-lasagna/#wprm-recipe-container-145181',
     ingredients: [
       '1 lb sushi-grade ahi tuna, cut into ~¾-inch cubes',
       '¼ cup soy sauce',
@@ -107,4 +108,235 @@ export const MOCK_RECIPES: Recipe[] = [
     dietaryTags: ['Nut-Free', 'Dairy-Free'],
     healthTags: [],
   },
+
+  { // in the google doc, this is categorized as "seafood"; need to implement that cuisine category in our questionnaire
+    // TO UPDATE: source, sourceUrl
+    id: '4',
+    title: 'Baked Salmon',
+    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    cuisines: ['American'],
+    mealType: 'lunch',
+    mealPrepDuration: 3,
+    difficulty: 'easy',
+    cookTime: 30,
+    servings: 4,
+    rating: 4.8,
+    source: 'Food Blogger Pro',
+    sourceUrl: 'https://example.com/recipe/margherita-pizza',
+    ingredients: [
+      'Salmon fillets',
+      'Olive oil',
+      'Salt',
+      'Cracked black pepper',
+      'Minced garlic',
+      'Italian herb seasoning blend (or herbs de provence)',
+      'Lemon'
+    ],
+    instructions: [
+      'Preheat the oven to 400 degrees and grease a large baking pan. Arrange the salmon fillets on the baking sheet and season generously with salt and pepper.',
+      'Stir together the olive oil, garlic, herbs, and juice of 1/2 of the lemon. Spoon this sauce over salmon fillets, being sure to rub all over the tops and sides of the salmon so it has no dry spots. Thinly slice the remaining 1/2 of the lemon and top each piece of salmon with a slice of lemon.',
+      'Bake the salmon in the oven for 12-15 minutes or until the salmon is opaque and flaky when pulled apart with a fork. You can broil the last 1-2 minutes if desired.',
+      'Garnish with fresh thyme or parsley if desired and serve.'
+    ],
+    dietaryTags: ['Nut-Free', 'Gluten-Free'],
+    healthTags: [],
+  },
+
+  {
+    id: '5',
+    title: 'Tikka Masala',
+    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    cuisines: ['Asian'],
+    mealType: 'lunch',
+    mealPrepDuration: 3,
+    difficulty: 'easy',
+    cookTime: 30,
+    servings: 6,
+    rating: 4.8,
+    source: 'All Recipes',
+    sourceUrl: 'https://www.allrecipes.com/recipe/228293/curry-stand-chicken-tikka-masala-sauce/',
+    ingredients: [
+      '2 tablespoons ghee (clarified butter)',
+      '1 onion, finely chopped',
+      '4 cloves garlic, minced',
+      '1 tablespoon ground cumin',
+      '1 teaspoon salt, or more to taste (Optional)',
+      '1 teaspoon ground ginger',
+      '1 teaspoon cayenne pepper',
+      '½ teaspoon ground cinnamon',
+      '¼ teaspoon ground turmeric',
+      '1 (14 ounce) can tomato sauce',
+      '1 cup heavy whipping cream',
+      '1 tablespoon white sugar, or more to taste (Optional)',
+      '2 teaspoons paprika',
+      '1 tablespoon vegetable oil',
+      '4 skinless, boneless chicken breast halves, cut into bite-size pieces',
+      '½ teaspoon curry powder',
+    ],
+    instructions: [
+      'Heat ghee in a large skillet over medium heat. Add onion; cook and stir until translucent, about 5 minutes.',
+      'Stir in garlic; cook and stir just until fragrant, about 1 minute. Stir cumin, 1 teaspoon salt, ginger, cayenne pepper, cinnamon, and turmeric into onion mixture; fry until fragrant, about 2 minutes.',
+      'Stir tomato sauce into onion and spice mixture; bring to a boil and reduce heat to low.',
+      'Simmer sauce for 10 minutes, then mix in cream, 1 tablespoon sugar, and paprika. Bring sauce back to a simmer and cook, stirring often, until sauce is thickened, 10 to 15 minutes.',
+      'Heat vegetable oil in a separate skillet over medium heat. Stir chicken into hot oil; add curry powder. Sear chicken until lightly browned but still pink inside, about 3 minutes; stir often.',
+      'Transfer chicken and any pan juices into sauce. Simmer chicken in sauce until no longer pink, about 30 minutes; adjust sugar and salt to taste.'
+    ],
+    dietaryTags: ['Nut-Free', 'Gluten-Free'],
+    healthTags: [],
+  },
+
+  {
+    // TO UPDATE: mealPrepDuration, servings, dietaryTags, healthTags
+    id: '6',
+    title: 'Pho',
+    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    cuisines: ['Asian'],
+    mealType: 'lunch',
+    mealPrepDuration: 3,
+    difficulty: 'easy',
+    cookTime: 30,
+    servings: 4,
+    rating: 4.8,
+    source: 'The Forked Spoon',
+    sourceUrl: 'https://example.com/recipe/margherita-pizza',
+    ingredients: [
+      'Marrow bones and meaty bones',
+      'Thinly sliced raw meat',
+      'Yellow onions',
+      'Whole garlic',
+      'Fresh ginger',
+      'Whole spices: star anise, cloves, cinnamon sticks, black cardamom pods, fennel seeds',
+      'Coriander seeds',
+      'Salt',
+      'Fish sauce',
+      'Sugar',
+      'Fresh mint',
+      'Sprigs of Thai basil',
+      'Fresh cilantro',
+      'Green onions',
+      'Sliced white or red onion',
+      'Fresh line wedges',
+      'Mung bean sprouts',
+      'Sliced Thai red chiles',
+      'Cabbage',
+      'Bok choy',
+      'Sliced jalapeño',
+      'Sriracha or other spicy chili sauces',
+      'Hoisin sauce',
+      'Fish sauce'
+    ],
+    instructions: [
+      'Pick a large enough bowl. YOU GUYS, Vietnamese noodle soup needs big bowls. Cereal bowls will not work here. Between the noodles and the broth and the veggies, bowls fill up fast.',
+      'Rice noodles first. Add your pre-cooked noodles first. My husband loves a whole lot of noodles, whereas I love extra veggies. Fill your bowl appropriately.',
+      'Raw meat next. Yes, you guys. RAW. Totally, completely uncooked (see above). Remember how I mentioned slicing your beef super (paper) thin? This is why. Don’t worry, assuming your broth is boiling hot and not just warm, your meat will get fully cooked.',
+      'Add the broth. It doesn’t matter which broth (the fast or the slow method), this is the moment. Just make sure it’s super hot.',
+      'Garnish like crazy. Add cooked beef from the bones you used to make the bone broth, add one sauce…or five. Guys, it’s up to you! Have fun!'
+    ],
+    dietaryTags: ['Nut-Free', 'Gluten-Free'],
+    healthTags: [],
+  },
+
+  {
+    // TO UPDATE: healthTags
+    id: '7',
+    title: 'Curry',
+    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    cuisines: ['Asian'],
+    mealType: 'lunch',
+    mealPrepDuration: 3,
+    difficulty: 'easy',
+    cookTime: 45,
+    servings: 4,
+    rating: 4.8,
+    source: 'The Forked Spoon',
+    sourceUrl: 'https://example.com/recipe/margherita-pizza',
+    ingredients: [
+      '2 tablespoons olive oil',
+      '1 small onion, chopped',
+      '2 cloves garlic, minced',
+      '3 tablespoons curry powder',
+      '1 teaspoon ground cinnamon',
+      '1 teaspoon paprika',
+      '1 bay leaf',
+      '½ teaspoon grated fresh ginger root',
+      '½ teaspoon white sugar',
+      'Salt to taste',
+      '2 skinlessm boneless chicken breast halves, cut into bite-sized pieces',
+      '1 tablespoon tomato paste',
+      '1 cup plain yogurt',
+      '¾ cup coconut milk',
+      '½ lemon, juiced',
+      '½ teaspoon cayenne pepper'
+    ],
+    instructions: [
+      'Heat olive oil in a skillet over medium heat. Sauté onion until lightly browned.',
+      'Stir in garlic, curry powder, cinnamon, paprika, bay leaf, ginger, sugar, and salt. Continue stirring for 2 minutes.',
+      'Add chicken pieces, tomato paste, yogurt, and coconut milk. Bring to a boil, reduce heat, and simmer for 20 to 25 minutes.',
+      'Remove bay leaf, and stir in lemon juice and cayenne pepper. Simmer 5 more minutes.'
+    ],
+    dietaryTags: ['Nut-Free', 'Gluten-Free'],
+    healthTags: [],
+  },
+
+  {
+    id: '8',
+    title: 'Caesar salad',
+    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    cuisines: ['American'],
+    mealType: 'lunch',
+    mealPrepDuration: 3,
+    difficulty: 'easy',
+    cookTime: 30,
+    servings: 4,
+    rating: 4.8,
+    source: 'Natasha\'s Kitchen',
+    sourceUrl: 'https://natashaskitchen.com/caesar-salad-recipe/',
+    ingredients: [
+      '1 large or 2 small heads of Romaine lettuce',
+      'Parmesan cheese, grated/shredded/shaved',
+      'Crisp croutons',
+      'Caesar dressing'
+    ],
+    instructions: [
+      'Rinse the lettuce in cold water.',
+      'Chop, rinse, and spin dry the leaves to remove as much water as possible.',
+      'Once the romaine is rinsed and dried, store it in an airtight container or a zip-top bag with a paper towel to absorb moisture,',
+      'Add desired amount of croutons and mix.'
+    ],
+    dietaryTags: ['Nut-Free', 'Gluten-Free'],
+    healthTags: [],
+  },
+
+  {
+    id: '8',
+    title: 'Caesar salad',
+    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    cuisines: ['American'],
+    mealType: 'lunch',
+    mealPrepDuration: 3,
+    difficulty: 'easy',
+    cookTime: 30,
+    servings: 4,
+    rating: 4.8,
+    source: 'Natasha\'s Kitchen',
+    sourceUrl: 'https://natashaskitchen.com/caesar-salad-recipe/',
+    ingredients: [
+      '1 large or 2 small heads of Romaine lettuce',
+      'Parmesan cheese, grated/shredded/shaved',
+      'Crisp croutons',
+      'Caesar dressing'
+    ],
+    instructions: [
+      'Rinse the lettuce in cold water.',
+      'Chop, rinse, and spin dry the leaves to remove as much water as possible.',
+      'Once the romaine is rinsed and dried, store it in an airtight container or a zip-top bag with a paper towel to absorb moisture,',
+      'Add desired amount of croutons and mix.'
+    ],
+    dietaryTags: ['Nut-Free', 'Gluten-Free'],
+    healthTags: [],
+  },
+
+  
+
+  
 ]
