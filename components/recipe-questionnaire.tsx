@@ -1,0 +1,236 @@
+'use client'
+
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import type { RecipePreferences } from '@/types/recipe'
+
+const CUISINES = ['Italian', 'Asian', 'Mexican', 'Indian', 'Mediterranean', 'American', 'Thai', 'French']
+const DIETARY_RESTRICTIONS = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Dairy-Free', 'Nut-Free', 'Kosher']
+const HEALTH_GOALS = ['High Protein', 'Low Carb', 'Low Cholesterol', 'Low Sodium', 'Keto', 'Paleo']
+
+interface RecipeQuestionnaireProps {
+  onSubmit: (preferences: RecipePreferences) => void
+}
+
+export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
+  const [step, setStep] = useState(0)
+  const [preferences, setPreferences] = useState<Partial<RecipePreferences>>({
+    cuisines: [],
+    dietaryRestrictions: [],
+    healthGoals: [],
+  })
+
+  const steps = [
+    {
+      question: 'How long do you want to spend cooking?',
+      type: 'select',
+      key: 'duration',
+      options: [
+        { label: 'Quick (under 30 min)', value: 'quick' },
+        { label: 'Medium (30-60 min)', value: 'medium' },
+        { label: 'Long (over 60 min)', value: 'long' },
+      ],
+    },
+    {
+      question: 'How many people are you cooking for?',
+      type: 'number',
+      key: 'servings',
+      min: 1,
+      max: 12,
+    },
+    {
+      question: 'What cuisines interest you?',
+      type: 'multi-select',
+      key: 'cuisines',
+      options: CUISINES,
+    },
+    {
+      question: 'What difficulty level?',
+      type: 'select',
+      key: 'difficulty',
+      options: [
+        { label: 'Easy', value: 'easy' },
+        { label: 'Medium', value: 'medium' },
+        { label: 'Hard', value: 'hard' },
+      ],
+    },
+    {
+      question: 'Any dietary restrictions?',
+      type: 'multi-select',
+      key: 'dietaryRestrictions',
+      options: DIETARY_RESTRICTIONS,
+    },
+    {
+      question: 'Health goals?',
+      type: 'multi-select',
+      key: 'healthGoals',
+      options: HEALTH_GOALS,
+    },
+  ]
+
+  const currentStep = steps[step]
+
+  const handleSelect = (value: string | number) => {
+    setPreferences(prev => ({ ...prev, [currentStep.key]: value }))
+    handleNext()
+  }
+
+  const handleMultiSelect = (value: string) => {
+    const current = preferences[currentStep.key as keyof RecipePreferences] as string[] || []
+    const updated = current.includes(value)
+      ? current.filter(item => item !== value)
+      : [...current, value]
+    setPreferences(prev => ({ ...prev, [currentStep.key]: updated }))
+  }
+
+  const handleNumberChange = (value: number) => {
+    setPreferences(prev => ({ ...prev, [currentStep.key]: value }))
+  }
+
+  const handleNext = () => {
+    if (step < steps.length - 1) {
+      setStep(step + 1)
+    } else {
+      onSubmit(preferences as RecipePreferences)
+    }
+  }
+
+  const handlePrev = () => {
+    if (step > 0) {
+      setStep(step - 1)
+    }
+  }
+
+  const canProceed = () => {
+    const value = preferences[currentStep.key as keyof RecipePreferences]
+    if (currentStep.type === 'multi-select') {
+      return Array.isArray(value) && value.length > 0
+    }
+    return value !== undefined && value !== null && value !== ''
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-xl">
+        <div className="p-8">
+          {/* Progress Bar */}
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-sm font-medium text-muted-foreground">
+                Step {step + 1} of {steps.length}
+              </p>
+              <p className="text-sm font-medium text-muted-foreground">
+                {Math.round(((step + 1) / steps.length) * 100)}%
+              </p>
+            </div>
+            <div className="w-full h-2 bg-border rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-orange-500 to-amber-500 transition-all duration-300"
+                style={{ width: `${((step + 1) / steps.length) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Question */}
+          <h2 className="text-2xl font-bold mb-6 text-foreground">
+            {currentStep.question}
+          </h2>
+
+          {/* Options */}
+          <div className="space-y-3 mb-8">
+            {currentStep.type === 'select' && (
+              <div className="space-y-2">
+                {currentStep.options?.map(option => (
+                  <button
+                    key={option.value}
+                    onClick={() => handleSelect(option.value)}
+                    className={`w-full p-4 rounded-lg border-2 transition-all text-left font-medium ${
+                      preferences[currentStep.key as keyof RecipePreferences] === option.value
+                        ? 'border-orange-500 bg-orange-50 dark:bg-orange-950 text-orange-900 dark:text-orange-100'
+                        : 'border-border hover:border-orange-300 hover:bg-orange-50/50 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {currentStep.type === 'number' && (
+              <div className="space-y-4">
+                <input
+                  type="number"
+                  min={currentStep.min}
+                  max={currentStep.max}
+                  value={(preferences[currentStep.key as keyof RecipePreferences] as number) || ''}
+                  onChange={e => handleNumberChange(parseInt(e.target.value))}
+                  className="w-full p-4 rounded-lg border-2 border-border focus:border-orange-500 outline-none text-center text-lg font-bold"
+                />
+                <div className="flex justify-center gap-2">
+                  {Array.from({ length: 6 }, (_, i) => {
+                    const val = (i + 1) * 2
+                    return (
+                      <button
+                        key={val}
+                        onClick={() => handleNumberChange(val)}
+                        className={`w-10 h-10 rounded-full font-semibold transition-all ${
+                          preferences.servings === val
+                            ? 'bg-orange-500 text-white'
+                            : 'bg-border hover:bg-orange-100 dark:hover:bg-slate-700'
+                        }`}
+                      >
+                        {val}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {currentStep.type === 'multi-select' && (
+              <div className="flex flex-wrap gap-2">
+                {currentStep.options?.map(option => {
+                  const current = preferences[currentStep.key as keyof RecipePreferences] as string[] || []
+                  const isSelected = current.includes(option)
+                  return (
+                    <button
+                      key={option}
+                      onClick={() => handleMultiSelect(option)}
+                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                        isSelected
+                          ? 'bg-orange-500 text-white shadow-md'
+                          : 'bg-border hover:bg-orange-100 dark:hover:bg-slate-700 text-foreground'
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Navigation */}
+          <div className="flex gap-3">
+            <Button
+              onClick={handlePrev}
+              disabled={step === 0}
+              variant="outline"
+              className="flex-1"
+            >
+              Back
+            </Button>
+            <Button
+              onClick={handleNext}
+              disabled={!canProceed()}
+              className="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600"
+            >
+              {step === steps.length - 1 ? 'Find Recipes' : 'Next'}
+            </Button>
+          </div>
+        </div>
+      </Card>
+    </div>
+  )
+}
