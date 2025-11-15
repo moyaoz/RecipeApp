@@ -2,6 +2,7 @@ export interface RecipePreferences {
   duration: 'quick' | 'medium' | 'long'
   servings: number
   cuisines: string[]
+  mealType?: 'breakfast' | 'lunch' | 'dinner'
   difficulty: 'easy' | 'medium' | 'hard'
   dietaryRestrictions: string[]
   healthGoals: string[]
@@ -13,6 +14,7 @@ export interface Recipe {
   title: string
   image: string
   cuisines: string[]
+  mealType?: 'breakfast' | 'lunch' | 'dinner'
   difficulty: 'easy' | 'medium' | 'hard'
   cookTime: number
   servings: number

@@ -40,11 +40,12 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
     const filtered = MOCK_RECIPES.filter(recipe => {
       const matchesCuisine = preferences.cuisines.length === 0 || 
         recipe.cuisines.some(c => preferences.cuisines.includes(c))
-      const matchesDifficulty = recipe.difficulty === preferences.difficulty
+      const matchesDifficulty = !preferences.difficulty || recipe.difficulty === preferences.difficulty
+      const matchesMeal = !preferences.mealType || recipe.mealType === preferences.mealType
       const matchesDiet = preferences.dietaryRestrictions.length === 0 ||
         recipe.dietaryTags.some(tag => preferences.dietaryRestrictions.includes(tag))
 
-      return matchesCuisine && matchesDifficulty && matchesDiet
+      return matchesCuisine && matchesDifficulty && matchesDiet && matchesMeal
     })
 
     setRecipes(filtered)

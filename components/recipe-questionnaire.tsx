@@ -20,8 +20,19 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
     dietaryRestrictions: [],
     healthGoals: [],
   })
+  
 
   const steps = [
+    {
+      question: 'Which meal are you planning for?',
+      type: 'select',
+      key: 'mealType',
+      options: [
+        { label: 'Breakfast', value: 'breakfast' },
+        { label: 'Lunch', value: 'lunch' },
+        { label: 'Dinner', value: 'dinner' },
+      ],
+    },
     {
       question: 'How long do you want to spend cooking?',
       type: 'select',
@@ -102,13 +113,7 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
     }
   }
 
-  const canProceed = () => {
-    const value = preferences[currentStep.key as keyof RecipePreferences]
-    if (currentStep.type === 'multi-select') {
-      return Array.isArray(value) && value.length > 0
-    }
-    return value !== undefined && value !== null && value !== ''
-  }
+  const canProceed = () => true
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex items-center justify-center p-4">
@@ -154,6 +159,7 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
                     {option.label}
                   </button>
                 ))}
+                
               </div>
             )}
 
@@ -185,6 +191,7 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
                     )
                   })}
                 </div>
+                
               </div>
             )}
 
@@ -207,6 +214,7 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
                     </button>
                   )
                 })}
+                
               </div>
             )}
           </div>
