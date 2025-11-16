@@ -296,26 +296,45 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
 
         {/* Recipe Card Stack */}
         <div className="relative h-96 sm:h-[500px]">
-          {filteredRecipes.slice(currentIndex, currentIndex + 3).map((recipe, index) => (
-            <div
-              key={recipe.id}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                transform: `scale(${1 - index * 0.05}) translateY(${index * 12}px)`,
-                zIndex: Math.max(0, 3 - index),
-              }}
-            >
-              <RecipeCard
-                recipe={recipe}
-                isBookmarked={bookmarks.has(recipe.id)}
-                onSwipe={handleSwipe}
-                onBookmarkToggle={() => toggleBookmark(recipe.id)}
-                onClick={() => setSelectedRecipe(recipe)}
-                isActive={index === 0}
-              />
-            </div>
-          ))}
+          {filteredRecipes.slice(currentIndex, currentIndex + 3).map((recipe, index) => {
+            // top card is index 0; show next 1-2 cards behind with requested styles
+            const isTop = index === 0
+            // explicit scales for the peeked cards
+            const peekScales = [0.92, 0.85]
+            const peekTranslateY = [12, 24]
+            const peekOpacity = [0.92, 0.85]
+
+            const scale = index === 0 ? 1 : (peekScales[index - 1] ?? 0.85)
+            const translateY = index === 0 ? 0 : (peekTranslateY[index - 1] ?? 24)
+            const opacity = index === 0 ? 1 : (peekOpacity[index - 1] ?? 0.85)
+            const zIndex = 100 - index
+            const pointerEvents = isTop ? 'auto' : 'none'
+
+            return (
+              <div
+                key={recipe.id}
+                aria-hidden={!isTop}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  transform: `translateY(${translateY}px) scale(${scale})`,
+                  zIndex,
+                  opacity,
+                  transition: 'transform 350ms cubic-bezier(.2,.9,.2,1), opacity 250ms ease',
+                  pointerEvents,
+                }}
+              >
+                <RecipeCard
+                  recipe={recipe}
+                  isBookmarked={bookmarks.has(recipe.id)}
+                  onSwipe={handleSwipe}
+                  onBookmarkToggle={() => toggleBookmark(recipe.id)}
+                  onClick={() => setSelectedRecipe(recipe)}
+                  isActive={isTop}
+                />
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

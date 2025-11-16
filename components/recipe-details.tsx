@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowLeft, Bookmark, BookMarked as BookmarkOpen, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -22,6 +22,13 @@ export function RecipeDetails({
   const [userRating, setUserRating] = useState<UserRating | null>(null)
   const [showRating, setShowRating] = useState(false)
   const [hoverRating, setHoverRating] = useState(0)
+
+  useEffect(() => {
+    // When the details view mounts, jump to top so content starts at the top immediately
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0)
+    }
+  }, [])
 
   const handleRating = (cooked: boolean, rating: number) => {
     const newRating: UserRating = {

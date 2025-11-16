@@ -28,30 +28,7 @@ export function RecipeCard({
   const [isAnimating, setIsAnimating] = useState(false)
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null)
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isAnimating || !isActive) return
-    setDragStart(e.clientX)
-    setDragCurrent(e.clientX)
-    setIsDragging(true)
-  }
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || isAnimating) return
-    setDragCurrent(e.clientX)
-  }
-
-  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || isAnimating) return
-    
-    const diff = dragStart - dragCurrent
-    setIsDragging(false)
-
-    if (Math.abs(diff) > 100) {
-      triggerSwipe(diff > 0 ? 'left' : 'right')
-    } else {
-      setDragCurrent(0)
-    }
-  }
+  // mouse drag handlers intentionally removed to enforce keyboard-only swipe for mouse users
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (isAnimating || !isActive) return
@@ -88,7 +65,6 @@ export function RecipeCard({
       setDragCurrent(0)
     }, 300)
   }
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isAnimating || !isActive) return
@@ -132,15 +108,7 @@ export function RecipeCard({
   return (
     <div
       className="relative h-screen max-h-[800px] flex items-center justify-center px-4"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={() => {
-        if (isDragging && !isAnimating) {
-          setIsDragging(false)
-          setDragCurrent(0)
-        }
-      }}
+      // mouse handlers intentionally removed so mouse users can't swipe; keyboard arrows control swipes
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -151,6 +119,8 @@ export function RecipeCard({
           transform: getSwipeTransform(),
           opacity: getSwipeOpacity(),
           transition: isDragging ? 'none' : 'all 0.3s ease-out',
+          transformStyle: 'preserve-3d',
+          willChange: 'transform, opacity',
         }}
       >
         {/* Image Section */}
@@ -211,11 +181,7 @@ export function RecipeCard({
         {/* Info Section */}
         <div className="p-6 space-y-4">
           <div className="flex gap-4 text-sm">
-            <div>
-              <p className="text-muted-foreground text-xs font-medium">SERVINGS</p>
-              <p className="text-lg font-bold">{recipe.servings}</p>
-            </div>
-            <div>
+              <div>
               <p className="text-muted-foreground text-xs font-medium">RATING</p>
               <p className="text-lg font-bold">⭐ {recipe.rating.toFixed(1)}</p>
             </div>

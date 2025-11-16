@@ -6,19 +6,21 @@ import { Card } from '@/components/ui/card'
 import type { RecipePreferences } from '@/types/recipe'
 
 const CUISINES = ['Italian', 'Asian', 'Mexican', 'Indian', 'Mediterranean', 'American', 'Thai', 'French']
-const DIETARY_RESTRICTIONS = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Dairy-Free', 'Nut-Free', 'Kosher']
-const HEALTH_GOALS = ['High Protein', 'Low Carb', 'Low Cholesterol', 'Low Sodium', 'Keto', 'Paleo']
+const DIETARY_RESTRICTIONS = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Dairy-Free', 'Nut-Free']
+const HEALTH_GOALS = ['High Protein', 'Low Carb', 'Low Cholesterol', 'Low Sodium']
 
 interface RecipeQuestionnaireProps {
   onSubmit: (preferences: RecipePreferences) => void
+  onBack?: () => void
 }
 
-export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
+export function RecipeQuestionnaire({ onSubmit, onBack }: RecipeQuestionnaireProps) {
   const [step, setStep] = useState(0)
   const [preferences, setPreferences] = useState<Partial<RecipePreferences>>({
     cuisines: [],
     dietaryRestrictions: [],
     healthGoals: [],
+    mealPrepDuration: 1,
   })
   
 
@@ -117,6 +119,8 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
   const handlePrev = () => {
     if (step > 0) {
       setStep(step - 1)
+    } else if (onBack) {
+      onBack()
     }
   }
 
@@ -176,47 +180,7 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
 
             {currentStep.type === 'number' && (
               <div className="space-y-4">
-                <div className="flex items-center justify-center gap-2">
-                  <button
-                    onClick={() => {
-                      const key = currentStep.key as keyof RecipePreferences
-                      const min = (currentStep as any).min ?? 1
-                      const cur = (preferences[key] as number) || min
-                      const next = Math.max(min, cur - 1)
-                      setPreferences(prev => ({ ...prev, [key]: next }))
-                    }}
-                    className="w-10 h-10 rounded-md bg-border hover:bg-orange-100 flex items-center justify-center"
-                    aria-label="Decrease"
-                  >
-                    −
-                  </button>
-
-                  <input
-                    type="number"
-                    min={currentStep.min}
-                    max={currentStep.max}
-                    value={(preferences[currentStep.key as keyof RecipePreferences] as number) || ''}
-                    onChange={e => handleNumberChange(parseInt(e.target.value))}
-                    readOnly
-                    className="w-28 p-4 rounded-lg border-2 border-border focus:border-orange-500 outline-none text-center text-lg font-bold cursor-default"
-                  />
-
-                  <button
-                    onClick={() => {
-                      const key = currentStep.key as keyof RecipePreferences
-                      const max = (currentStep as any).max ?? 7
-                      const cur = (preferences[key] as number) || ((currentStep as any).min ?? 1)
-                      const next = Math.min(max, cur + 1)
-                      setPreferences(prev => ({ ...prev, [key]: next }))
-                    }}
-                    className="w-10 h-10 rounded-md bg-border hover:bg-orange-100 flex items-center justify-center"
-                    aria-label="Increase"
-                  >
-                    +
-                  </button>
-                </div>
-
-                {currentStep.key === 'servings' && (
+                {currentStep.key === 'servings' ? (
                   <div className="flex justify-center gap-2">
                     {Array.from({ length: 6 }, (_, i) => {
                       const val = i + 1
@@ -235,8 +199,47 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
                       )
                     })}
                   </div>
-                )}
+                ) : (
+                  <div className="flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => {
+                        const key = currentStep.key as keyof RecipePreferences
+                        const min = (currentStep as any).min ?? 1
+                        const cur = (preferences[key] as number) || min
+                        const next = Math.max(min, cur - 1)
+                        setPreferences(prev => ({ ...prev, [key]: next }))
+                      }}
+                      className="w-10 h-10 rounded-md bg-border hover:bg-orange-100 flex items-center justify-center"
+                      aria-label="Decrease"
+                    >
+                      −
+                    </button>
 
+                    <input
+                      type="number"
+                      min={currentStep.min}
+                      max={currentStep.max}
+                      value={(preferences[currentStep.key as keyof RecipePreferences] as number) || ''}
+                      onChange={e => handleNumberChange(parseInt(e.target.value))}
+                      readOnly
+                      className="w-28 p-4 rounded-lg border-2 border-border focus:border-orange-500 outline-none text-center text-lg font-bold cursor-default"
+                    />
+
+                    <button
+                      onClick={() => {
+                        const key = currentStep.key as keyof RecipePreferences
+                        const max = (currentStep as any).max ?? 7
+                        const cur = (preferences[key] as number) || ((currentStep as any).min ?? 1)
+                        const next = Math.min(max, cur + 1)
+                        setPreferences(prev => ({ ...prev, [key]: next }))
+                      }}
+                      className="w-10 h-10 rounded-md bg-border hover:bg-orange-100 flex items-center justify-center"
+                      aria-label="Increase"
+                    >
+                      +
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
@@ -267,10 +270,10 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
           </div>
 
           {/* Navigation */}
-          <div className="flex gap-3">
+          <div className="hidden sm:flex gap-3">
             <Button
               onClick={handlePrev}
-              disabled={step === 0}
+              disabled={!onBack && step === 0}
               variant="outline"
               className="flex-1"
             >
@@ -281,11 +284,35 @@ export function RecipeQuestionnaire({ onSubmit }: RecipeQuestionnaireProps) {
               disabled={!canProceed()}
               className="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600"
             >
-              {step === steps.length - 1 ? 'Find Recipes' : 'Next'}
+              {step === steps.length - 1 ? 'Swipe Recipes' : 'Next'}
             </Button>
           </div>
         </div>
       </Card>
+
+      {/* Mobile bottom action bar */}
+      <div className="sm:hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 w-[92%] max-w-md z-20">
+        <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur rounded-full p-3 flex items-center justify-between shadow-lg">
+          <button
+            onClick={handlePrev}
+            disabled={!onBack && step === 0}
+            className="px-4 py-2 rounded-full font-medium text-sm"
+          >
+            ←
+          </button>
+
+          <button
+            onClick={handleNext}
+            disabled={!canProceed()}
+            className="-mt-6 bg-gradient-to-r from-orange-500 to-amber-500 w-14 h-14 rounded-full flex items-center justify-center text-white shadow-xl"
+            aria-label="Primary action"
+          >
+            {step === steps.length - 1 ? '✓' : '→'}
+          </button>
+
+          <div className="w-10" />
+        </div>
+      </div>
     </div>
   )
 }
