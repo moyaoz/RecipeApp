@@ -23,10 +23,13 @@ export interface Recipe {
   rating: number
   source: string
   sourceUrl: string
-  ingredients: string[]
+  ingredients: { quantity: number | string | null; unit: string; item: string }[]
   instructions: string[]
   dietaryTags: string[]
   healthTags: string[]
+  // User-selected scaling preferences (optional)
+  userServings?: number
+  userDays?: number
 }
 
 export interface Ingredient {

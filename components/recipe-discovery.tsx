@@ -43,6 +43,8 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
     const prefMealType = (preferences as any).mealType
     const prefMealPrepDuration = (preferences as any).mealPrepDuration
     const prefDietary = (preferences as any).dietaryRestrictions ?? []
+    const prefServings = (preferences as any).servings
+    const prefDays = (preferences as any).mealPrepDuration
 
     const filtered = MOCK_RECIPES.filter(recipe => {
       const matchesCuisine = prefCuisines.length === 0 || recipe.cuisines.some((c: string) => prefCuisines.includes(c))
@@ -52,7 +54,12 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
       const matchesDiet = prefDietary.length === 0 || recipe.dietaryTags.some((tag: string) => prefDietary.includes(tag))
 
       return matchesCuisine && matchesDifficulty && matchesDiet && matchesMeal && matchesMealPrepDuration
-    })
+    }).map(recipe => ({
+      ...recipe,
+      // Attach user preferences for scaling
+      userServings: prefServings,
+      userDays: prefDays
+    }))
 
     setRecipes(filtered)
     applyFilters(filtered, searchQuery, activeFilters)

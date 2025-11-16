@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { ArrowLeft, Bookmark, BookMarked as BookmarkOpen, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import type { Recipe, UserRating } from '@/types/recipe'
-import { formatMinutes } from '@/lib/utils'
+import { formatMinutes, scaleIngredients, formatQuantityAsFraction } from '@/lib/utils'
 
 interface RecipeDetailsProps {
   recipe: Recipe
@@ -23,6 +23,28 @@ export function RecipeDetails({
   const [userRating, setUserRating] = useState<UserRating | null>(null)
   const [showRating, setShowRating] = useState(false)
   const [hoverRating, setHoverRating] = useState(0)
+
+  // Calculate scaled ingredients based on user preferences
+  const scaledIngredients = useMemo(() => {
+    if (recipe.userServings && recipe.userDays) {
+      return scaleIngredients(
+        recipe.ingredients,
+        recipe.servings,
+        recipe.userServings,
+        recipe.userDays
+      )
+    }
+    // Even without scaling, format quantities as fractions
+    return recipe.ingredients.map(ingredient => ({
+      ...ingredient,
+      quantity: formatQuantityAsFraction(ingredient.quantity)
+    }))
+  }, [recipe.ingredients, recipe.servings, recipe.userServings, recipe.userDays])
+
+  // Calculate total servings for display
+  const totalServings = recipe.userServings && recipe.userDays
+    ? recipe.userServings * recipe.userDays
+    : recipe.servings
 
   useEffect(() => {
     // When the details view mounts, jump to top so content starts at the top immediately
@@ -100,7 +122,12 @@ export function RecipeDetails({
           </Card>
           <Card className="p-4">
             <p className="text-sm text-muted-foreground mb-1">Servings</p>
-            <p className="text-2xl font-bold">{recipe.servings}</p>
+            <p className="text-2xl font-bold">{totalServings}</p>
+            {recipe.userServings && recipe.userDays && (
+              <p className="text-xs text-muted-foreground mt-1">
+                {recipe.userServings} people × {recipe.userDays} days
+              </p>
+            )}
           </Card>
           <Card className="p-4">
             <p className="text-sm text-muted-foreground mb-1">Difficulty</p>
@@ -141,11 +168,25 @@ export function RecipeDetails({
         {/* Ingredients */}
         <Card className="p-6 mb-6">
           <h2 className="text-xl font-bold mb-4">Ingredients</h2>
+          {recipe.userServings && recipe.userDays && (
+            <p className="text-sm text-muted-foreground mb-3">
+              Scaled for {recipe.userServings} people × {recipe.userDays} days 
+              (originally {recipe.servings} servings)
+            </p>
+          )}
           <ul className="space-y-3">
-            {recipe.ingredients.map((ingredient, idx) => (
+            {scaledIngredients.map((ingredient, idx) => (
               <li key={idx} className="flex items-start gap-3">
                 <input type="checkbox" className="mt-1 w-4 h-4 rounded" />
-                <span className="text-foreground">{ingredient}</span>
+                <span className="text-foreground">
+                  {ingredient.quantity && (
+                    <span className="font-medium">{ingredient.quantity} </span>
+                  )}
+                  {ingredient.unit && (
+                    <span className="font-medium">{ingredient.unit} </span>
+                  )}
+                  {ingredient.item}
+                </span>
               </li>
             ))}
           </ul>
