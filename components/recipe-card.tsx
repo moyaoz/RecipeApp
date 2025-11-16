@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Bookmark, BookMarked as BookmarkOpen, ChevronLeft, ChevronRight, X, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { Recipe } from '@/types/recipe'
+import { formatMinutes } from '@/lib/utils'
 
 interface RecipeCardProps {
   recipe: Recipe
@@ -175,7 +176,7 @@ export function RecipeCard({
                 {recipe.difficulty}
               </span>
               <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
-                {recipe.cookTime} min
+                {formatMinutes(recipe.cookTime)}
               </span>
             </div>
           </div>

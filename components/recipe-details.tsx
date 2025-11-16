@@ -5,6 +5,7 @@ import { ArrowLeft, Bookmark, BookMarked as BookmarkOpen, Star } from 'lucide-re
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import type { Recipe, UserRating } from '@/types/recipe'
+import { formatMinutes } from '@/lib/utils'
 
 interface RecipeDetailsProps {
   recipe: Recipe
@@ -95,7 +96,7 @@ export function RecipeDetails({
         <div className="grid grid-cols-2 gap-3 mb-6">
           <Card className="p-4">
             <p className="text-sm text-muted-foreground mb-1">Cooking Time</p>
-            <p className="text-2xl font-bold">{recipe.cookTime} min</p>
+            <p className="text-2xl font-bold">{formatMinutes(recipe.cookTime)}</p>
           </Card>
           <Card className="p-4">
             <p className="text-sm text-muted-foreground mb-1">Servings</p>
