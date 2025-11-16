@@ -24,7 +24,6 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
   const [searchQuery, setSearchQuery] = useState('')
   const [showFilters, setShowFilters] = useState(false)
   const [activeFilters, setActiveFilters] = useState({
-    difficulty: '',
     cuisine: '',
     maxTime: 999,
   })
@@ -36,27 +35,39 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
       setBookmarks(new Set(JSON.parse(saved)))
     }
 
-    // Filter recipes based on preferences
-    // Defensive: preferences may be a partial object (e.g. when user skips questionnaire).
+    // Filter recipes based on NON-NUMERIC preferences only
+    // servings and days are multipliers, not filters
     const prefCuisines = (preferences as any).cuisines ?? []
     const prefDifficulty = (preferences as any).difficulty
     const prefMealType = (preferences as any).mealType
-    const prefMealPrepDuration = (preferences as any).mealPrepDuration
     const prefDietary = (preferences as any).dietaryRestrictions ?? []
-    const prefServings = (preferences as any).servings
-    const prefDays = (preferences as any).mealPrepDuration
+    const prefDuration = (preferences as any).duration
+    
+    // These are multipliers, not filters
+    const prefServings = (preferences as any).servings || 1
+    const prefDays = (preferences as any).mealPrepDuration || 1
 
     const filtered = MOCK_RECIPES.filter(recipe => {
+      // Only filter by non-numeric preferences
       const matchesCuisine = prefCuisines.length === 0 || recipe.cuisines.some((c: string) => prefCuisines.includes(c))
       const matchesDifficulty = !prefDifficulty || recipe.difficulty === prefDifficulty
       const matchesMeal = !prefMealType || recipe.mealType === prefMealType
-      const matchesMealPrepDuration = !prefMealPrepDuration || recipe.mealPrepDuration === prefMealPrepDuration
       const matchesDiet = prefDietary.length === 0 || recipe.dietaryTags.some((tag: string) => prefDietary.includes(tag))
+      
+      // Filter by cook time duration if specified
+      let matchesDuration = true
+      if (prefDuration === 'quick') {
+        matchesDuration = recipe.cookTime < 30
+      } else if (prefDuration === 'medium') {
+        matchesDuration = recipe.cookTime >= 30 && recipe.cookTime <= 60
+      } else if (prefDuration === 'long') {
+        matchesDuration = recipe.cookTime > 60
+      }
 
-      return matchesCuisine && matchesDifficulty && matchesDiet && matchesMeal && matchesMealPrepDuration
+      return matchesCuisine && matchesDifficulty && matchesDiet && matchesMeal && matchesDuration
     }).map(recipe => ({
       ...recipe,
-      // Attach user preferences for scaling
+      // Attach user preferences for ingredient scaling (multipliers)
       userServings: prefServings,
       userDays: prefDays
     }))
@@ -78,11 +89,6 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
         recipe.title.toLowerCase().includes(search.toLowerCase()) ||
         recipe.source.toLowerCase().includes(search.toLowerCase())
       )
-    }
-
-    // Difficulty filter
-    if (filters.difficulty) {
-      result = result.filter(recipe => recipe.difficulty === filters.difficulty)
     }
 
     // Cuisine filter
@@ -232,26 +238,6 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
         {/* Filter Panel (appears below header row) */}
         {showFilters && (
           <div className="bg-card border border-border rounded-lg p-4 my-4 space-y-4">
-            {/* Difficulty Filter */}
-            <div>
-              <label className="text-sm font-semibold mb-2 block">Difficulty</label>
-              <div className="flex gap-2">
-                {['', 'easy', 'medium', 'hard'].map(val => (
-                  <button
-                    key={val}
-                    onClick={() => handleFilterChange('difficulty', val)}
-                    className={`px-3 py-2 rounded text-sm font-medium transition-all ${
-                      activeFilters.difficulty === val
-                        ? 'bg-orange-500 text-white'
-                        : 'bg-border hover:bg-orange-100 dark:hover:bg-slate-700'
-                    }`}
-                  >
-                    {val ? val.charAt(0).toUpperCase() + val.slice(1) : 'All'}
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* Cuisine Filter */}
             <div>
               <label className="text-sm font-semibold mb-2 block">Cuisine</label>
@@ -296,8 +282,8 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
               variant="outline"
               className="w-full"
               onClick={() => {
-                setActiveFilters({ difficulty: '', cuisine: '', maxTime: 999 })
-                applyFilters(recipes, searchQuery, { difficulty: '', cuisine: '', maxTime: 999 })
+                setActiveFilters({ cuisine: '', maxTime: 999 })
+                applyFilters(recipes, searchQuery, { cuisine: '', maxTime: 999 })
               }}
             >
               Clear Filters

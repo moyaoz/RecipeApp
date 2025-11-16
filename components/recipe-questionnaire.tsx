@@ -66,16 +66,6 @@ export function RecipeQuestionnaire({ onSubmit, onBack }: RecipeQuestionnairePro
       options: CUISINES,
     },
     {
-      question: 'What difficulty level?',
-      type: 'select',
-      key: 'difficulty',
-      options: [
-        { label: 'Easy', value: 'easy' },
-        { label: 'Medium', value: 'medium' },
-        { label: 'Hard', value: 'hard' },
-      ],
-    },
-    {
       question: 'Any dietary restrictions?',
       type: 'multi-select',
       key: 'dietaryRestrictions',

@@ -193,12 +193,14 @@ export function RecipeCard({
               <p className="text-muted-foreground text-xs font-medium">SOURCE</p>
               <p className="text-sm font-medium truncate">{recipe.source}</p>
             </div>
-            {recipe.userServings && recipe.userDays && (
-              <div>
-                <p className="text-muted-foreground text-xs font-medium">SERVINGS</p>
+            <div>
+              <p className="text-muted-foreground text-xs font-medium">SERVINGS</p>
+              {recipe.userServings && recipe.userDays ? (
                 <p className="text-sm font-bold">{recipe.userServings}p × {recipe.userDays}d</p>
-              </div>
-            )}
+              ) : (
+                <p className="text-sm font-bold">{recipe.servings}</p>
+              )}
+            </div>
           </div>
 
           {/* Action Buttons */}

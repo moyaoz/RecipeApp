@@ -17,7 +17,10 @@ export function LandingHero({ onStart }: LandingHeroProps) {
 
         <div className="bg-white/90 dark:bg-slate-900/80 backdrop-blur-md rounded-3xl shadow-2xl p-12 sm:p-16 z-10">
           <div className="max-w-2xl">
-            <h1 className="text-5xl sm:text-6xl font-extrabold leading-tight mb-4">Recipe Swipe</h1>
+            <h1 className="text-5xl sm:text-6xl font-extrabold leading-tight mb-4">
+              <span className="text-black dark:text-white">Meal</span>
+              <span className="text-orange-600">Matchr</span>
+            </h1>
             <p className="text-lg text-orange-600 font-semibold mb-6">Swipe your way to better meal prep.</p>
 
             <p className="text-base text-muted-foreground mb-8">
