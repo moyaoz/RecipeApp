@@ -397,8 +397,10 @@ export const MOCK_RECIPES: Recipe[] = [
       { quantity: 0.5, unit: 'cup', item: 'frozen blackberries' }
     ],
     instructions: [
-      'Put all ingredients into a blender.',
-      'Mix until smooth.'
+      'Add the chia seeds and milk into a small glass jar or container, then stir to combine.',
+      'Let the mixture sit for about 15 minutes (chia seeds should begin to gel), then stir again.',
+      'After it’s gelled, add your chosen toppings.',
+      'Secure the container with a lid, then store it either in the refrigerator or freezer.'
     ],
     dietaryTags: ['Nut-Free'],
     healthTags: ['Low-Cholesterol', 'High-Fiber'],
