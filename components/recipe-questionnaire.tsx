@@ -126,8 +126,18 @@ export function RecipeQuestionnaire({ onSubmit, onBack }: RecipeQuestionnairePro
 
   const canProceed = () => true
 
+  const handleSeeAll = () => {
+    // Skip the questionnaire and show all recipes
+    onSubmit({} as RecipePreferences)
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex items-center justify-center p-4">
+      {/* Fixed top-right skip button visible in the viewport */}
+      <div className="fixed right-4 top-4 z-50">
+        <Button variant="outline" onClick={handleSeeAll}>
+          See All Recipes
+        </Button>
+      </div>
       <Card className="w-full max-w-md shadow-xl">
         <div className="p-8">
           {/* Progress Bar */}

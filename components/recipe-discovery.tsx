@@ -37,14 +37,19 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
     }
 
     // Filter recipes based on preferences
+    // Defensive: preferences may be a partial object (e.g. when user skips questionnaire).
+    const prefCuisines = (preferences as any).cuisines ?? []
+    const prefDifficulty = (preferences as any).difficulty
+    const prefMealType = (preferences as any).mealType
+    const prefMealPrepDuration = (preferences as any).mealPrepDuration
+    const prefDietary = (preferences as any).dietaryRestrictions ?? []
+
     const filtered = MOCK_RECIPES.filter(recipe => {
-      const matchesCuisine = preferences.cuisines.length === 0 || 
-        recipe.cuisines.some(c => preferences.cuisines.includes(c))
-      const matchesDifficulty = !preferences.difficulty || recipe.difficulty === preferences.difficulty
-      const matchesMeal = !preferences.mealType || recipe.mealType === preferences.mealType
-      const matchesMealPrepDuration = !preferences.mealPrepDuration || recipe.mealPrepDuration === preferences.mealPrepDuration
-      const matchesDiet = preferences.dietaryRestrictions.length === 0 ||
-        recipe.dietaryTags.some(tag => preferences.dietaryRestrictions.includes(tag))
+      const matchesCuisine = prefCuisines.length === 0 || recipe.cuisines.some((c: string) => prefCuisines.includes(c))
+      const matchesDifficulty = !prefDifficulty || recipe.difficulty === prefDifficulty
+      const matchesMeal = !prefMealType || recipe.mealType === prefMealType
+      const matchesMealPrepDuration = !prefMealPrepDuration || recipe.mealPrepDuration === prefMealPrepDuration
+      const matchesDiet = prefDietary.length === 0 || recipe.dietaryTags.some((tag: string) => prefDietary.includes(tag))
 
       return matchesCuisine && matchesDifficulty && matchesDiet && matchesMeal && matchesMealPrepDuration
     })
