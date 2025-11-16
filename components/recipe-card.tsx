@@ -1,9 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { Bookmark, BookMarked as BookmarkOpen, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Bookmark, BookMarked as BookmarkOpen, ChevronLeft, ChevronRight, X, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import type { Recipe } from '@/types/recipe'
 
 interface RecipeCardProps {
@@ -12,6 +11,7 @@ interface RecipeCardProps {
   onSwipe: (direction: 'left' | 'right') => void
   onBookmarkToggle: () => void
   onClick: () => void
+  isActive?: boolean
 }
 
 export function RecipeCard({
@@ -20,52 +20,107 @@ export function RecipeCard({
   onSwipe,
   onBookmarkToggle,
   onClick,
+  isActive = true,
 }: RecipeCardProps) {
   const [dragStart, setDragStart] = useState(0)
+  const [dragCurrent, setDragCurrent] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null)
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isAnimating || !isActive) return
     setDragStart(e.clientX)
+    setDragCurrent(e.clientX)
     setIsDragging(true)
   }
 
-  const handleMouseUp = (e: React.MouseEvent) => {
-    if (!isDragging) return
-    
-    const dragEnd = e.clientX
-    const diff = dragStart - dragEnd
-
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) {
-        onSwipe('left')
-      } else {
-        onSwipe('right')
-      }
-    }
-    
-    setIsDragging(false)
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || isAnimating) return
+    setDragCurrent(e.clientX)
   }
 
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || isAnimating) return
+    
+    const diff = dragStart - dragCurrent
+    setIsDragging(false)
+
+    if (Math.abs(diff) > 100) {
+      triggerSwipe(diff > 0 ? 'left' : 'right')
+    } else {
+      setDragCurrent(0)
+    }
+  }
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (isAnimating || !isActive) return
     setDragStart(e.touches[0].clientX)
+    setDragCurrent(e.touches[0].clientX)
     setIsDragging(true)
   }
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!isDragging) return
-    
-    const dragEnd = e.changedTouches[0].clientX
-    const diff = dragStart - dragEnd
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isDragging || isAnimating) return
+    setDragCurrent(e.touches[0].clientX)
+  }
 
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) {
-        onSwipe('left')
-      } else {
-        onSwipe('right')
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isDragging || isAnimating) return
+    
+    const diff = dragStart - dragCurrent
+    setIsDragging(false)
+
+    if (Math.abs(diff) > 100) {
+      triggerSwipe(diff > 0 ? 'left' : 'right')
+    } else {
+      setDragCurrent(0)
+    }
+  }
+
+  const triggerSwipe = (direction: 'left' | 'right') => {
+    setSwipeDirection(direction)
+    setIsAnimating(true)
+    setTimeout(() => {
+      onSwipe(direction)
+      setSwipeDirection(null)
+      setIsAnimating(false)
+      setDragCurrent(0)
+    }, 300)
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isAnimating || !isActive) return
+      if (e.key === 'ArrowLeft') {
+        triggerSwipe('left')
+      } else if (e.key === 'ArrowRight') {
+        triggerSwipe('right')
       }
     }
-    
-    setIsDragging(false)
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isAnimating, isActive])
+
+  const getSwipeTransform = () => {
+    if (isAnimating && swipeDirection === 'left') {
+      return 'translate(-150%, 0) rotate(-10deg)'
+    }
+    if (isAnimating && swipeDirection === 'right') {
+      return 'translate(150%, 0) rotate(10deg)'
+    }
+    if (isDragging && dragCurrent !== dragStart) {
+      const diff = dragCurrent - dragStart
+      const rotate = (diff / 100) * 10
+      return `translate(${diff * 0.5}px, 0) rotate(${rotate}deg)`
+    }
+    return 'translate(0, 0) rotate(0deg)'
+  }
+
+  const getSwipeOpacity = () => {
+    if (isAnimating) return 0
+    return 1
   }
 
   const difficultyColor = {
@@ -75,106 +130,141 @@ export function RecipeCard({
   }
 
   return (
-    <Card
-      className="overflow-hidden cursor-grab active:cursor-grabbing select-none"
+    <div
+      className="relative h-screen max-h-[800px] flex items-center justify-center px-4"
       onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onMouseLeave={() => {
+        if (isDragging && !isAnimating) {
+          setIsDragging(false)
+          setDragCurrent(0)
+        }
+      }}
       onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative h-96 bg-muted overflow-hidden">
-        <img
-          src={recipe.image || "/placeholder.svg"}
-          alt={recipe.title}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-        
-        {/* Bookmark Button */}
-        <button
-          onClick={e => {
-            e.stopPropagation()
-            onBookmarkToggle()
-          }}
-          className="absolute top-4 right-4 p-2 rounded-full bg-white/90 hover:bg-white transition-colors"
-        >
-          {isBookmarked ? (
-            <BookmarkOpen className="w-6 h-6 text-orange-500 fill-orange-500" />
-          ) : (
-            <Bookmark className="w-6 h-6 text-gray-600" />
-          )}
-        </button>
+      <div
+        className="w-full lg:w-11/12 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden cursor-grab active:cursor-grabbing select-none"
+        style={{
+          transform: getSwipeTransform(),
+          opacity: getSwipeOpacity(),
+          transition: isDragging ? 'none' : 'all 0.3s ease-out',
+        }}
+      >
+        {/* Image Section */}
+        <div className="relative h-96 sm:h-[500px] lg:h-[600px] bg-muted overflow-hidden">
+          <img
+            src={recipe.image || "/placeholder.svg"}
+            alt={recipe.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+          
+          {/* Bookmark Button */}
+          <button
+            onClick={e => {
+              e.stopPropagation()
+              onBookmarkToggle()
+            }}
+            className="absolute top-4 right-4 p-2 rounded-full bg-white/90 hover:bg-white transition-colors z-10"
+          >
+            {isBookmarked ? (
+              <BookmarkOpen className="w-6 h-6 text-orange-500 fill-orange-500" />
+            ) : (
+              <Bookmark className="w-6 h-6 text-gray-600" />
+            )}
+          </button>
 
-        {/* Content */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <h3 className="text-2xl font-bold mb-2">{recipe.title}</h3>
-          <div className="flex gap-3 flex-wrap">
-            <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
-              {recipe.cuisines[0]}
-            </span>
-            <span className={`font-medium text-sm capitalize ${difficultyColor[recipe.difficulty]}`}>
-              {recipe.difficulty}
-            </span>
-            <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
-              {recipe.cookTime} min
-            </span>
+          {/* Swipe Indicators */}
+          {isDragging && dragCurrent < dragStart && (
+            <div className="absolute top-6 left-6 flex items-center gap-2 text-white animate-pulse">
+              <X className="w-8 h-8" />
+              <span className="text-lg font-bold">SKIP</span>
+            </div>
+          )}
+          {isDragging && dragCurrent > dragStart && (
+            <div className="absolute top-6 right-6 flex items-center gap-2 text-white animate-pulse">
+              <span className="text-lg font-bold">SAVE</span>
+              <Check className="w-8 h-8" />
+            </div>
+          )}
+
+          {/* Title and Tags */}
+          <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+            <h3 className="text-2xl font-bold mb-3">{recipe.title}</h3>
+            <div className="flex gap-3 flex-wrap">
+              <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
+                {recipe.cuisines[0]}
+              </span>
+              <span className={`font-medium text-sm capitalize ${difficultyColor[recipe.difficulty]}`}>
+                {recipe.difficulty}
+              </span>
+              <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
+                {recipe.cookTime} min
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Card Body */}
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-4">
+        {/* Info Section */}
+        <div className="p-6 space-y-4">
+          <div className="flex gap-4 text-sm">
             <div>
-              <p className="text-sm text-muted-foreground">Servings</p>
+              <p className="text-muted-foreground text-xs font-medium">SERVINGS</p>
               <p className="text-lg font-bold">{recipe.servings}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Rating</p>
+              <p className="text-muted-foreground text-xs font-medium">RATING</p>
               <p className="text-lg font-bold">⭐ {recipe.rating.toFixed(1)}</p>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Source</p>
+            <div className="flex-1">
+              <p className="text-muted-foreground text-xs font-medium">SOURCE</p>
               <p className="text-sm font-medium truncate">{recipe.source}</p>
             </div>
           </div>
-        </div>
 
-        <div className="flex gap-3">
-          <Button
-            variant="outline"
-            className="flex-1"
-            onClick={e => {
-              e.stopPropagation()
-              onSwipe('left')
-            }}
-          >
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            Skip
-          </Button>
-          <Button
-            onClick={e => {
-              e.stopPropagation()
-              onClick()
-            }}
-            className="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600"
-          >
-            View Recipe
-          </Button>
-          <Button
-            variant="outline"
-            className="flex-1"
-            onClick={e => {
-              e.stopPropagation()
-              onSwipe('right')
-            }}
-          >
-            <ChevronRight className="w-4 h-4 ml-2" />
-            Save
-          </Button>
+          {/* Action Buttons */}
+          <div className="grid grid-cols-3 gap-2 pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={e => {
+                e.stopPropagation()
+                triggerSwipe('left')
+              }}
+              className="flex flex-col items-center gap-1 h-auto py-3"
+            >
+              <X className="w-5 h-5" />
+              <span className="text-xs">Skip</span>
+            </Button>
+            <Button
+              onClick={e => {
+                e.stopPropagation()
+                onClick()
+              }}
+              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 flex flex-col items-center gap-1 h-auto py-3"
+              size="sm"
+            >
+              <ChevronRight className="w-5 h-5" />
+              <span className="text-xs">Open</span>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={e => {
+                e.stopPropagation()
+                triggerSwipe('right')
+              }}
+              className="flex flex-col items-center gap-1 h-auto py-3"
+            >
+              <Check className="w-5 h-5" />
+              <span className="text-xs">Save</span>
+            </Button>
+          </div>
         </div>
       </div>
-    </Card>
+    </div>
   )
 }

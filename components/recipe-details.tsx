@@ -21,6 +21,7 @@ export function RecipeDetails({
 }: RecipeDetailsProps) {
   const [userRating, setUserRating] = useState<UserRating | null>(null)
   const [showRating, setShowRating] = useState(false)
+  const [hoverRating, setHoverRating] = useState(0)
 
   const handleRating = (cooked: boolean, rating: number) => {
     const newRating: UserRating = {
@@ -35,16 +36,22 @@ export function RecipeDetails({
     const ratings = JSON.parse(localStorage.getItem('recipe-ratings') || '[]')
     ratings.push(newRating)
     localStorage.setItem('recipe-ratings', JSON.stringify(ratings))
-
-    setTimeout(() => {
-      onClose()
-    }, 1000)
   }
 
   const difficultyColor = {
     easy: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
     medium: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
     hard: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
+  }
+
+  const getRatingMessage = (rating: number) => {
+    if (rating >= 4) {
+      return "✓ Thanks for rating! We'll recommend similar recipes next time."
+    } else if (rating === 3) {
+      return "✓ Thanks for the feedback! We'll look for recipes you might enjoy more."
+    } else {
+      return "✓ Thanks for rating! We'll recommend you better recipes next time."
+    }
   }
 
   return (
@@ -174,15 +181,24 @@ export function RecipeDetails({
               </Button>
             ) : (
               <div className="space-y-4">
-                <h3 className="font-bold text-lg">How was it?</h3>
-                <div className="flex justify-center gap-2 mb-4">
+                <h3 className="font-bold text-lg">Rate this recipe</h3>
+                <div className="flex justify-center gap-3 mb-4">
                   {[1, 2, 3, 4, 5].map(rating => (
                     <button
                       key={rating}
                       onClick={() => handleRating(true, rating)}
-                      className="text-4xl hover:scale-125 transition-transform"
+                      onMouseEnter={() => setHoverRating(rating)}
+                      onMouseLeave={() => setHoverRating(0)}
+                      className="hover:scale-125 transition-transform"
+                      aria-label={`Rate ${rating} stars`}
                     >
-                      {rating <= 3 ? '😕' : rating === 4 ? '😊' : '🤩'}
+                      <Star
+                        className={`w-10 h-10 transition-colors ${
+                          rating <= (hoverRating || 0)
+                            ? 'fill-orange-500 text-orange-500'
+                            : 'text-muted-foreground'
+                        }`}
+                      />
                     </button>
                   ))}
                 </div>
@@ -191,7 +207,7 @@ export function RecipeDetails({
                   onClick={() => setShowRating(false)}
                   className="w-full"
                 >
-                  Not yet
+                  Back
                 </Button>
               </div>
             )}
@@ -201,7 +217,7 @@ export function RecipeDetails({
         {userRating && (
           <Card className="p-6 bg-green-100 dark:bg-green-900 text-center">
             <p className="text-green-900 dark:text-green-100 font-semibold">
-              ✓ Thanks for rating! We'll recommend similar recipes next time.
+              {getRatingMessage(userRating.rating)}
             </p>
           </Card>
         )}

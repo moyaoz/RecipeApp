@@ -185,13 +185,13 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
               )}
             </Button>
             <Button variant="outline" size="sm" onClick={onReset}>
-              Reset
+              Back to Filters
             </Button>
           </div>
         </div>
 
         {/* Search and Filter Bar */}
-        <div className="mb-6 space-y-3">
+        <div className="space-y-2">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
@@ -294,14 +294,29 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
           </p>
         </div>
 
-        {/* Recipe Card */}
-        <RecipeCard
-          recipe={currentRecipe}
-          isBookmarked={bookmarks.has(currentRecipe.id)}
-          onSwipe={handleSwipe}
-          onBookmarkToggle={() => toggleBookmark(currentRecipe.id)}
-          onClick={() => setSelectedRecipe(currentRecipe)}
-        />
+        {/* Recipe Card Stack */}
+        <div className="relative h-96 sm:h-[500px]">
+          {filteredRecipes.slice(currentIndex, currentIndex + 3).map((recipe, index) => (
+            <div
+              key={recipe.id}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                transform: `scale(${1 - index * 0.05}) translateY(${index * 12}px)`,
+                zIndex: Math.max(0, 3 - index),
+              }}
+            >
+              <RecipeCard
+                recipe={recipe}
+                isBookmarked={bookmarks.has(recipe.id)}
+                onSwipe={handleSwipe}
+                onBookmarkToggle={() => toggleBookmark(recipe.id)}
+                onClick={() => setSelectedRecipe(recipe)}
+                isActive={index === 0}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
