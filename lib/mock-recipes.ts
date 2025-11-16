@@ -1,8 +1,7 @@
 import type { Recipe } from '@/types/recipe'
 
 // TO DO: 
-// - need source for: pokebowl, baked salmon
-// - no image on the recipe website for: vanilla berry protein smoothie, French Toast Sticks
+// - need source for: baked salmon
 // - maybe change the format of cooktime to hours and minutes instead of just minutes?
 
 export const MOCK_RECIPES: Recipe[] = [
@@ -349,7 +348,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '10',
     title: 'Vanilla Berry Protein Smoothie',
-    image: '/placeholder.jpg',
+    image: '/vanilla-berry-protein-smoothie.jpg',
     cuisines: ['American'],
     mealType: 'lunch',
     mealPrepDuration: 3,
@@ -444,7 +443,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '13',
     title: 'French Toast Sticks',
-    image: '/placeholder.jpg',
+    image: '/french-toast-sticks.jpg',
     cuisines: ['American'],
     mealType: 'breakfast',
     mealPrepDuration: 4,
