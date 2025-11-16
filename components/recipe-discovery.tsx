@@ -294,11 +294,7 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
         )}
 
         {/* Recipe Card Stack */}
-        <div className="relative">
-          <p className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-sm text-muted-foreground pointer-events-none">
-            Press ← to skip, → to save.
-          </p>
-          <div className="relative h-96 sm:h-[500px]">
+        <div className="relative h-96 sm:h-[500px]">
           {filteredRecipes.slice(currentIndex, currentIndex + 3).map((recipe, index) => {
             // top card is index 0; show next 1-2 cards behind with requested styles
             const isTop = index === 0
