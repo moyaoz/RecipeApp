@@ -1,7 +1,8 @@
 import type { Recipe } from '@/types/recipe'
 
 // TO DO: 
-// - update the image for every recipe
+// - need source for: pokebowl, baked salmon
+// - no image on the recipe website for: vanilla berry protein smoothie, French Toast Sticks
 // - maybe change the format of cooktime to hours and minutes instead of just minutes?
 
 export const MOCK_RECIPES: Recipe[] = [
@@ -9,7 +10,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '1',
     title: 'Burrito Wrap',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/burrito-wrap.webp',
     cuisines: ['Mexican'],
     mealType: 'lunch',
     mealPrepDuration: 3,
@@ -17,8 +18,8 @@ export const MOCK_RECIPES: Recipe[] = [
     cookTime: 40,
     servings: 6,
     rating: 4.8,
-    source: 'Food Blogger Pro',
-    sourceUrl: 'https://example.com/recipe/margherita-pizza',
+    source: 'New York Times Cooking',
+    sourceUrl: 'https://cooking.nytimes.com/recipes/1024725-easy-burritos',
     ingredients: [
       '1 pound ground beef',
       '1 medium yellow or white onion, finely chopped',
@@ -47,7 +48,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '2',
     title: 'Pokebowl',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/pokebowl.jpg',
     cuisines: ['Italian'],
     mealType: 'lunch',
     mealPrepDuration: 3,
@@ -55,8 +56,8 @@ export const MOCK_RECIPES: Recipe[] = [
     cookTime: 30,
     servings: 4,
     rating: 4.8,
-    source: 'Food Blogger Pro',
-    sourceUrl: 'https://example.com/recipe/margherita-pizza',
+    source: 'Jessica Gavin',
+    sourceUrl: 'https://www.jessicagavin.com/ahi-tuna-poke-bowl-recipe/',
     ingredients: [
       '1 lb sushi-grade ahi tuna, cut into ~¾-inch cubes',
       '¼ cup soy sauce',
@@ -80,7 +81,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '3',
     title: 'Lasagna',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/lasagna.jpg',
     cuisines: ['Italian'],
     mealType: 'lunch',
     mealPrepDuration: 3,
@@ -123,7 +124,7 @@ export const MOCK_RECIPES: Recipe[] = [
     // TO UPDATE: source, sourceUrl
     id: '4',
     title: 'Baked Salmon',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/baked-salmon.jpg',
     cuisines: ['American'],
     mealType: 'lunch',
     mealPrepDuration: 3,
@@ -154,8 +155,8 @@ export const MOCK_RECIPES: Recipe[] = [
 
   {
     id: '5',
-    title: 'Tikka Masala',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    title: 'Tikka Masala', 
+    image: '/tikka-masala.jpg',
     cuisines: ['Asian'],
     mealType: 'lunch',
     mealPrepDuration: 3,
@@ -199,7 +200,7 @@ export const MOCK_RECIPES: Recipe[] = [
     // TO UPDATE: mealPrepDuration, servings, dietaryTags, healthTags
     id: '6',
     title: 'Pho',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/pho.webp',
     cuisines: ['Asian'],
     mealType: 'lunch',
     mealPrepDuration: 3,
@@ -208,7 +209,7 @@ export const MOCK_RECIPES: Recipe[] = [
     servings: 4,
     rating: 4.8,
     source: 'The Forked Spoon',
-    sourceUrl: 'https://example.com/recipe/margherita-pizza',
+    sourceUrl: 'https://theforkedspoon.com/pho-recipe/',
     ingredients: [
       'Marrow bones and meaty bones',
       'Thinly sliced raw meat',
@@ -246,10 +247,9 @@ export const MOCK_RECIPES: Recipe[] = [
   },
 
   {
-    // TO UPDATE: healthTags
     id: '7',
-    title: 'Curry',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    title: 'Indian Chicken Curry',
+    image: '/indian-chicken-curry.jpg',
     cuisines: ['Asian'],
     mealType: 'lunch',
     mealPrepDuration: 3,
@@ -257,8 +257,8 @@ export const MOCK_RECIPES: Recipe[] = [
     cookTime: 45,
     servings: 4,
     rating: 4.8,
-    source: 'The Forked Spoon',
-    sourceUrl: 'https://example.com/recipe/margherita-pizza',
+    source: 'All Recipes',
+    sourceUrl: 'https://www.allrecipes.com/recipe/46822/indian-chicken-curry-ii/',
     ingredients: [
       '2 tablespoons olive oil',
       '1 small onion, chopped',
@@ -290,7 +290,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '8',
     title: 'Caesar salad',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/caesar-salad.jpg',
     cuisines: ['American'],
     mealType: 'lunch',
     mealPrepDuration: 3,
@@ -319,7 +319,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '9',
     title: 'Overnight Oats',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/overnight-oats.jpg',
     cuisines: ['American'],
     mealType: 'breakfast',
     mealPrepDuration: 1,
@@ -349,7 +349,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '10',
     title: 'Vanilla Berry Protein Smoothie',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/placeholder.jpg',
     cuisines: ['American'],
     mealType: 'lunch',
     mealPrepDuration: 3,
@@ -378,7 +378,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '11',
     title: 'Chia Pudding',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/chia-pudding.webp',
     cuisines: ['American'],
     mealType: 'breakfast',
     mealPrepDuration: 1,
@@ -386,8 +386,8 @@ export const MOCK_RECIPES: Recipe[] = [
     cookTime: 240,
     servings: 1,
     rating: 4.8,
-    source: 'Tasty',
-    sourceUrl: 'https://tasty.co/recipe/vanilla-berry-protein-smoothie',
+    source: 'Downshiftology',
+    sourceUrl: 'https://downshiftology.com/recipes/meal-prep-chia-pudding/',
     ingredients: [
       '2 tbsp chia seeds',
       '½ cup milk (of your choice)',
@@ -407,7 +407,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '12',
     title: 'Sheet Pan Omelette',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/sheet-pan-omelette.jpg',
     cuisines: ['American'],
     mealType: 'breakfast',
     mealPrepDuration: 2,
@@ -442,7 +442,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '13',
     title: 'French Toast Sticks',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/placeholder.jpg',
     cuisines: ['American'],
     mealType: 'breakfast',
     mealPrepDuration: 4,
@@ -478,7 +478,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '14',
     title: 'Chicken Cajun Pasta',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/chicken-cajun-pasta.jpg',
     cuisines: ['American'],
     mealType: 'lunch',
     mealPrepDuration: 4,
@@ -523,7 +523,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '15',
     title: 'Turkey Taco Bowl',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/turkey-taco-bowl.jpg',
     cuisines: ['Mexican'],
     mealType: 'breakfast',
     mealPrepDuration: 4,
@@ -563,7 +563,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '16',
     title: 'Chicken & Veggie Fried Rice',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/chicken-veggie-fried-rice.jpg',
     cuisines: ['Asian'],
     mealType: 'lunch',
     mealPrepDuration: 4,
@@ -601,7 +601,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '17',
     title: 'Mac & Cheese',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/mac-and-cheese.jpg',
     cuisines: ['American'],
     mealType: 'lunch',
     mealPrepDuration: 4,
@@ -641,7 +641,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '18',
     title: 'Ramen',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/ramen.jpg',
     cuisines: ['Asian'],
     mealType: 'dinner',
     mealPrepDuration: 5,
@@ -679,7 +679,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '19',
     title: 'Chicken Stir Fry',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/chicken-stir-fry.jpg',
     cuisines: ['Asian'],
     mealType: 'dinner',
     mealPrepDuration: 4,
@@ -687,8 +687,8 @@ export const MOCK_RECIPES: Recipe[] = [
     cookTime: 18,
     servings: 1,
     rating: 4.8,
-    source: '',
-    sourceUrl: '',
+    source: 'Mom on Timeout',
+    sourceUrl: 'https://www.momontimeout.com/easy-chicken-stir-fry-recipe/#recipe',
     ingredients: [
       '1 lb boneless, skinless chicken breast, cut into 1-inch cubes',
       'Salt and pepper, to taste',
@@ -725,7 +725,7 @@ export const MOCK_RECIPES: Recipe[] = [
   {
     id: '20',
     title: 'Roasted Vegetable Salad',
-    image: '/margherita-pizza-fresh-basil-mozzarella.jpg',
+    image: '/roasted-vegetable-salad.jpg',
     cuisines: ['Mediterranean'],
     mealType: 'dinner',
     mealPrepDuration: 4,
