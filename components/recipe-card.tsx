@@ -107,7 +107,7 @@ export function RecipeCard({
 
   return (
     <div
-      className="relative h-screen max-h-[800px] flex items-center justify-center px-4"
+      className="relative flex items-center justify-center px-4 py-6"
       // mouse handlers intentionally removed so mouse users can't swipe; keyboard arrows control swipes
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -121,10 +121,13 @@ export function RecipeCard({
           transition: isDragging ? 'none' : 'all 0.3s ease-out',
           transformStyle: 'preserve-3d',
           willChange: 'transform, opacity',
+          maxHeight: 'calc(100vh - 48px)',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         {/* Image Section */}
-        <div className="relative h-96 sm:h-[500px] lg:h-[600px] bg-muted overflow-hidden">
+        <div className="relative bg-muted overflow-hidden flex-shrink-0" style={{ height: 'min(55vh, 420px)' }}>
           <img
             src={recipe.image || "/placeholder.svg"}
             alt={recipe.title}
@@ -162,8 +165,8 @@ export function RecipeCard({
           )}
 
           {/* Title and Tags */}
-          <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-            <h3 className="text-2xl font-bold mb-3">{recipe.title}</h3>
+          <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <h3 className="text-xl font-bold mb-2">{recipe.title}</h3>
             <div className="flex gap-3 flex-wrap">
               <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
                 {recipe.cuisines[0]}
@@ -179,7 +182,7 @@ export function RecipeCard({
         </div>
 
         {/* Info Section */}
-        <div className="p-6 space-y-4">
+        <div className="p-4 space-y-3 flex-1 overflow-auto">
           <div className="flex gap-4 text-sm">
               <div>
               <p className="text-muted-foreground text-xs font-medium">RATING</p>
@@ -192,38 +195,41 @@ export function RecipeCard({
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-3 gap-2 pt-2">
+          <div className="grid grid-cols-3 gap-2 pt-1">
             <Button
-              variant="outline"
+              variant="default"
               size="sm"
               onClick={e => {
                 e.stopPropagation()
                 triggerSwipe('left')
               }}
-              className="flex flex-col items-center gap-1 h-auto py-3"
+              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 flex flex-col items-center gap-1 h-auto py-2"
             >
               <X className="w-5 h-5" />
               <span className="text-xs">Skip</span>
             </Button>
+
             <Button
+              variant="default"
+              size="sm"
               onClick={e => {
                 e.stopPropagation()
                 onClick()
               }}
-              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 flex flex-col items-center gap-1 h-auto py-3"
-              size="sm"
+              className="flex flex-col items-center gap-1 h-auto py-2 bg-orange-100 text-orange-700 hover:bg-orange-200"
             >
               <ChevronRight className="w-5 h-5" />
-              <span className="text-xs">Open</span>
+              <span className="text-xs">View Recipe</span>
             </Button>
+
             <Button
-              variant="outline"
+              variant="default"
               size="sm"
               onClick={e => {
                 e.stopPropagation()
                 triggerSwipe('right')
               }}
-              className="flex flex-col items-center gap-1 h-auto py-3"
+              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 flex flex-col items-center gap-1 h-auto py-2"
             >
               <Check className="w-5 h-5" />
               <span className="text-xs">Save</span>

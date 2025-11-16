@@ -166,10 +166,35 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
 
   return (
     <div className="min-h-screen bg-background p-4">
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="mb-6 flex justify-between items-center gap-3">
-          <h1 className="text-3xl font-bold">Find a Recipe</h1>
+      {/* Full-width header (anchors buttons to viewport right but scrolls with page) */}
+      <div className="w-full relative mb-2">
+        <div className="max-w-2xl mx-auto">
+          <h1 className="text-3xl font-bold text-center">Find Your Meal Match</h1>
+
+          <div className="mt-3 flex items-center gap-3">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search recipes..."
+                value={searchQuery}
+                onChange={e => handleSearch(e.target.value)}
+                className="pl-10 w-full"
+              />
+            </div>
+
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              {showFilters ? 'Hide Filters' : 'Show Filters'}
+            </Button>
+          </div>
+
+          {/* moved recipe count below the cards for better flow */}
+        </div>
+
+        <div className="absolute right-4 top-4 z-50">
           <div className="flex gap-2">
             <Button
               variant="outline"
@@ -189,113 +214,91 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
             </Button>
           </div>
         </div>
+      </div>
 
-        {/* Search and Filter Bar */}
-        <div className="space-y-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Search recipes..."
-              value={searchQuery}
-              onChange={e => handleSearch(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-
-          {/* Filter Toggle */}
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => setShowFilters(!showFilters)}
-          >
-            {showFilters ? 'Hide Filters' : 'Show Filters'}
-          </Button>
-
-          {/* Filter Panel */}
-          {showFilters && (
-            <div className="bg-card border border-border rounded-lg p-4 space-y-4">
-              {/* Difficulty Filter */}
-              <div>
-                <label className="text-sm font-semibold mb-2 block">Difficulty</label>
-                <div className="flex gap-2">
-                  {['', 'easy', 'medium', 'hard'].map(val => (
-                    <button
-                      key={val}
-                      onClick={() => handleFilterChange('difficulty', val)}
-                      className={`px-3 py-2 rounded text-sm font-medium transition-all ${
-                        activeFilters.difficulty === val
-                          ? 'bg-orange-500 text-white'
-                          : 'bg-border hover:bg-orange-100 dark:hover:bg-slate-700'
-                      }`}
-                    >
-                      {val ? val.charAt(0).toUpperCase() + val.slice(1) : 'All'}
-                    </button>
-                  ))}
-                </div>
+      <div className="max-w-2xl mx-auto">
+        {/* Filter Panel (appears below header row) */}
+        {showFilters && (
+          <div className="bg-card border border-border rounded-lg p-4 my-4 space-y-4">
+            {/* Difficulty Filter */}
+            <div>
+              <label className="text-sm font-semibold mb-2 block">Difficulty</label>
+              <div className="flex gap-2">
+                {['', 'easy', 'medium', 'hard'].map(val => (
+                  <button
+                    key={val}
+                    onClick={() => handleFilterChange('difficulty', val)}
+                    className={`px-3 py-2 rounded text-sm font-medium transition-all ${
+                      activeFilters.difficulty === val
+                        ? 'bg-orange-500 text-white'
+                        : 'bg-border hover:bg-orange-100 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    {val ? val.charAt(0).toUpperCase() + val.slice(1) : 'All'}
+                  </button>
+                ))}
               </div>
-
-              {/* Cuisine Filter */}
-              <div>
-                <label className="text-sm font-semibold mb-2 block">Cuisine</label>
-                <div className="flex gap-2 flex-wrap">
-                  {['', ...allCuisines].map(cuisine => (
-                    <button
-                      key={cuisine}
-                      onClick={() => handleFilterChange('cuisine', cuisine)}
-                      className={`px-3 py-2 rounded text-sm font-medium transition-all ${
-                        activeFilters.cuisine === cuisine
-                          ? 'bg-orange-500 text-white'
-                          : 'bg-border hover:bg-orange-100 dark:hover:bg-slate-700'
-                      }`}
-                    >
-                      {cuisine ? cuisine : 'All'}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Cook Time Filter */}
-              <div>
-                <label className="text-sm font-semibold mb-2 block">
-                  Max Cook Time: {activeFilters.maxTime === 999 ? 'Any' : `${activeFilters.maxTime} min`}
-                </label>
-                <input
-                  type="range"
-                  min="5"
-                  max="120"
-                  step="5"
-                  value={activeFilters.maxTime === 999 ? 120 : activeFilters.maxTime}
-                  onChange={e => {
-                    const val = parseInt(e.target.value)
-                    handleFilterChange('maxTime', val === 120 ? 999 : val)
-                  }}
-                  className="w-full"
-                />
-              </div>
-
-              {/* Clear Filters */}
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  setActiveFilters({ difficulty: '', cuisine: '', maxTime: 999 })
-                  applyFilters(recipes, searchQuery, { difficulty: '', cuisine: '', maxTime: 999 })
-                }}
-              >
-                Clear Filters
-              </Button>
             </div>
-          )}
 
-          {/* Recipe Count */}
-          <p className="text-sm text-muted-foreground">
-            Showing {currentIndex + 1} of {filteredRecipes.length} recipes
-          </p>
-        </div>
+            {/* Cuisine Filter */}
+            <div>
+              <label className="text-sm font-semibold mb-2 block">Cuisine</label>
+              <div className="flex gap-2 flex-wrap">
+                {['', ...allCuisines].map(cuisine => (
+                  <button
+                    key={cuisine}
+                    onClick={() => handleFilterChange('cuisine', cuisine)}
+                    className={`px-3 py-2 rounded text-sm font-medium transition-all ${
+                      activeFilters.cuisine === cuisine
+                        ? 'bg-orange-500 text-white'
+                        : 'bg-border hover:bg-orange-100 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    {cuisine ? cuisine : 'All'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Cook Time Filter */}
+            <div>
+              <label className="text-sm font-semibold mb-2 block">
+                Max Cook Time: {activeFilters.maxTime === 999 ? 'Any' : `${activeFilters.maxTime} min`}
+              </label>
+              <input
+                type="range"
+                min="5"
+                max="120"
+                step="5"
+                value={activeFilters.maxTime === 999 ? 120 : activeFilters.maxTime}
+                onChange={e => {
+                  const val = parseInt(e.target.value)
+                  handleFilterChange('maxTime', val === 120 ? 999 : val)
+                }}
+                className="w-full"
+              />
+            </div>
+
+            {/* Clear Filters */}
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => {
+                setActiveFilters({ difficulty: '', cuisine: '', maxTime: 999 })
+                applyFilters(recipes, searchQuery, { difficulty: '', cuisine: '', maxTime: 999 })
+              }}
+            >
+              Clear Filters
+            </Button>
+          </div>
+        )}
 
         {/* Recipe Card Stack */}
-        <div className="relative h-96 sm:h-[500px]">
+        <div className="relative">
+          <p className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-sm text-muted-foreground pointer-events-none">
+            Press ← to skip, → to save.
+          </p>
+          <div className="relative h-96 sm:h-[500px]">
           {filteredRecipes.slice(currentIndex, currentIndex + 3).map((recipe, index) => {
             // top card is index 0; show next 1-2 cards behind with requested styles
             const isTop = index === 0
@@ -336,6 +339,10 @@ export function RecipeDiscovery({ preferences, onReset, onViewBookmarks }: Recip
             )
           })}
         </div>
+        {/* Recipe Count (moved below cards) */}
+        <p className="text-sm text-muted-foreground mt-3 text-center">
+          Showing {currentIndex + 1} of {filteredRecipes.length} recipes
+        </p>
       </div>
     </div>
   )
